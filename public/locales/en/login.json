@@ -1,0 +1,13 @@
+{
+  "form": {
+    "title": "Login",
+    "username": {
+      "label": "Username",
+      "placeholder": "Type your username..."
+    },
+    "password": {
+      "label": "Password"
+    }
+  },
+  "button": "Login"
+}

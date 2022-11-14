@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  --text-colour: #050505;
+  --background-colour: #f1f2f5;
+
+  color: var(--text-colour);
+  background-color: var(--background-colour);
+  font-family: "Helvetica, Arial, sans-serif";
+}
+
+html.dark {
+  --text-colour: #e4e6eb;
+  --background-colour: #18191a;
+}
+
+@layer base {
+  .logo-text {
+    font-family: sarif;
+    font-size: calc(1vw + 1rem);
+    font-weight: 900;
+  }
+}

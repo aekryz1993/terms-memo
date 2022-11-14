@@ -1,0 +1,43 @@
+{
+  "include": [
+    "remix.env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    // "config/jest/cssTransform.js",
+    // "config/jest/fileTransform.js",
+    "jest.config.ts",
+    "jest.setup.ts",
+    // "config/jest/setupTests.ts",
+    "app/__tests__/*.tsx",
+    "public/sw.js",
+  ],
+  "compilerOptions": {
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2019"
+    ],
+    "types": [
+      "cypress",
+      "@testing-library/cypress",
+      "jest"
+    ],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "target": "ES2019",
+    "strict": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./app/*"
+      ]
+    },
+    // Remix takes care of building everything in `remix build`.
+    "noEmit": true
+  }
+}
