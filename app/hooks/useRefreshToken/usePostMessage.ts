@@ -1,17 +1,23 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
+import { clearTimeoutIfexist } from ".";
 
-export const usePostMessage = ({
-  broadcastChannel,
-  isController,
-  token,
-  expiresIn,
+export const usePostDataToOtherClientTabs = ({
+  numClients,
   savePersistRefresh,
+  postMessage,
 }: {
-  broadcastChannel?: BroadcastChannel;
-  isController: boolean;
-  token?: string | null;
-  expiresIn?: Date | null;
+  numClients: number;
   savePersistRefresh: React.MutableRefObject<any>;
+  postMessage: (data: any) => void;
 }) => {
-  useEffect(() => {}, []);
+  return useCallback(
+    (timerId: React.MutableRefObject<number | NodeJS.Timeout | null>) => {
+      if (savePersistRefresh.current.type === "done") {
+        clearTimeoutIfexist(timerId);
+        const data = savePersistRefresh.current.data.authInfo;
+        if (numClients > 1) postMessage({ token: data.token });
+      }
+    },
+    [numClients, postMessage, savePersistRefresh]
+  );
 };

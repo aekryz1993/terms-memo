@@ -1,31 +1,45 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { clearTimeoutIfexist } from ".";
 
 export const useReceiveMessage = ({
-  broadcastChannel,
+  listenToMessage,
+  removeMessageListener,
   savePersistRefresh,
   isController,
   timerId,
 }: {
-  broadcastChannel?: BroadcastChannel;
+  listenToMessage: (callback: (event: MessageEvent<any>) => void) => void;
+  removeMessageListener: (callback: (event: MessageEvent<any>) => void) => void;
   savePersistRefresh: React.MutableRefObject<any>;
   isController: boolean;
   timerId: React.MutableRefObject<number | NodeJS.Timeout | null>;
 }) => {
-  useEffect(() => {
+  const listenMessageCallback = useCallback(
+    ({ data }: { data: { token: string } }) => {
+      savePersistRefresh.current.submit(
+        { token: data.token },
+        { action: ".", method: "get" }
+      );
+    },
+    [savePersistRefresh]
+  );
+
+  const listinerCondition = useCallback(() => {
     if (isController) return;
-
     clearTimeoutIfexist(timerId);
+  }, [isController, timerId]);
 
-    broadcastChannel?.addEventListener(
-      "message",
-      ({ data }: { data: { token: string } }) => {
-        savePersistRefresh.current.submit(
-          { token: data.token },
-          { action: "action/sync-cookie-token", method: "post" }
-        );
-      }
-    );
-  }, [broadcastChannel, isController, savePersistRefresh, timerId]);
+  useEffect(() => {
+    listinerCondition();
+    listenToMessage(listenMessageCallback);
+    return () => {
+      removeMessageListener(listenMessageCallback);
+    };
+  }, [
+    listenToMessage,
+    removeMessageListener,
+    listenMessageCallback,
+    listinerCondition,
+  ]);
 };
