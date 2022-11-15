@@ -42,39 +42,6 @@ export const Language = () => {
           </Fragment>
         ))}
       </Dropdown>
-
-      {/*
-      {isOpened ? (
-        <Portal
-          id="lang-dropdown"
-          clsx={clsx(
-            dropdownContainer,
-            i18n.dir(i18n.language) === "rtl"
-              ? "left-0 translate-x-12"
-              : "-translate-x-12 right-0"
-          )}
-          handleClose={handleCloseDropdown}
-        >
-          {Object.keys(lngs).map((lng) => (
-            <Fragment key={lng}>
-              {i18n.language == lng ? (
-                <Box
-                  newClasses={clsx(
-                    dropDownSlot,
-                    "bg-bg-sel_lt dark:bg-bg-sel_dark"
-                  )}
-                >
-                  {lngs[lng].nativeName}
-                </Box>
-              ) : (
-                <Link replace to={`?lng=${lng}`}>
-                  <Box newClasses={dropDownSlot}>{lngs[lng].nativeName}</Box>
-                </Link>
-              )}
-            </Fragment>
-          ))}
-        </Portal>
-      ) : null}*/}
     </button>
   );
 };

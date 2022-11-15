@@ -24,7 +24,10 @@ async function getAuthSession(request: Request) {
       return tokenValue ?? null;
     },
     setToken: (token: string) => session.set("refresh_token", token),
-    commit: (expires: Date) => tokenStorage.commitSession(session, { expires }),
+    commit: (expires: Date) => {
+      console.log("commit: ", expires);
+      return tokenStorage.commitSession(session, { expires });
+    },
     destroy: () => tokenStorage.destroySession(session),
   };
 }

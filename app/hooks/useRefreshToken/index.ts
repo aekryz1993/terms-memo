@@ -1,23 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useFetcher } from "@remix-run/react";
 
-import type { TUser } from "~/types/endpoints";
-import type { TAuthInfo } from "~/types/data";
 import { useCallbackRef } from "../useCallbackRef";
 import { compareDate, useDeepMemo } from "../useDeepMemo";
 import { useBroadcastChannel } from "../useBroadcastChannel";
 import { useClientsTabContext } from "~/context/clientsTab";
 
+import type { TAuthInfo } from "~/types/data";
+
 export const useRefreshToken = (authInfo: TAuthInfo | null) => {
-  const [token, setToken] = React.useState<string | null>(
-    () => authInfo?.token || null
-  );
-
-  const [loggedUser, setLoggedUser] = React.useState<TUser | null>(
-    () => authInfo?.user || null
-  );
-
-  const { postMessage, listenToMessage } = useBroadcastChannel("refresh_token");
+  const { postMessage, listenToMessage, removeMessageListener } =
+    useBroadcastChannel("refresh_token");
 
   const { isController, numClients } = useClientsTabContext();
 
@@ -29,67 +22,72 @@ export const useRefreshToken = (authInfo: TAuthInfo | null) => {
 
   const delayTimeout = useDeepMemo(authInfo?.expiresIn, compareDate);
 
+  const listenMessageCallback = useCallback(
+    ({ data }: { data: { token: string } }) => {
+      savePersistRefresh.current.submit(
+        { token: data.token },
+        { action: ".", method: "get" }
+      );
+    },
+    [savePersistRefresh]
+  );
+
   useEffect(() => {
     if (isController) return;
 
-    if (timerId.current) {
-      clearTimeout(timerId.current);
-      timerId.current = null;
-    }
+    clearTimeoutIfexist(timerId);
 
-    listenToMessage(({ data }: { data: { token: string } }) => {
-      savePersistRefresh.current.submit(
-        { token: data.token },
-        { action: "action/sync-cookie-token", method: "post" }
-      );
-    });
-  }, [listenToMessage, isController, savePersistRefresh, numClients]);
+    listenToMessage(listenMessageCallback);
+    return () => {
+      removeMessageListener(listenMessageCallback);
+    };
+  }, [
+    listenToMessage,
+    isController,
+    removeMessageListener,
+    listenMessageCallback,
+  ]);
 
-  useEffect(() => {
-    if (!isController) return;
-    if (!authInfo?.token && !timerId.current) return;
-    if (!authInfo?.token && timerId.current) {
-      clearTimeout(timerId.current);
-      return;
-    }
-
-    if (savePersistRefresh.current.type === "done") {
-      if (timerId.current) {
-        clearTimeout(timerId.current);
-        timerId.current = null;
-      }
-      const data = savePersistRefresh.current.data;
-      setToken(data.authInfo.token);
-      setLoggedUser(data.authInfo.user);
-      if (numClients > 1) postMessage({ token: data.authInfo.token });
-    }
-
-    if (authInfo?.token && !timerId.current && delayTimeout) {
+  const setRefreshTimer = useCallback(
+    (timerId: React.MutableRefObject<number | NodeJS.Timeout | null>) => {
       timerId.current = setTimeout(() => {
         savePersistRefresh.current.submit(
           { token: authInfo?.token },
           { action: "action/refresh-token", method: "post" }
         );
       }, delayTimeout.getTime() - Date.now() - 5000);
+    },
+    [authInfo?.token, delayTimeout, savePersistRefresh]
+  );
+
+  const postDataToOtherClientTabs = useCallback(
+    (timerId: React.MutableRefObject<number | NodeJS.Timeout | null>) => {
+      if (savePersistRefresh.current.type === "done") {
+        clearTimeoutIfexist(timerId);
+        const data = savePersistRefresh.current.data.authInfo;
+        if (numClients > 1) postMessage({ token: data.token });
+      }
+    },
+    [numClients, postMessage, savePersistRefresh]
+  );
+
+  const preventRefresh = !isController || !authInfo?.token;
+
+  useEffect(() => {
+    if (preventRefresh) {
+      clearTimeoutIfexist(timerId);
+      return;
+    }
+
+    postDataToOtherClientTabs(timerId);
+    if (!timerId.current) {
+      setRefreshTimer(timerId);
     }
 
     return () => {
       clearTimeoutIfexist(timerId);
-      if (timerId.current) {
-        clearTimeout(timerId.current);
-        timerId.current = null;
-      }
     };
-  }, [
-    authInfo?.token,
-    postMessage,
-    delayTimeout,
-    isController,
-    savePersistRefresh,
-    numClients,
-  ]);
-
-  return { token, setToken, loggedUser, setLoggedUser };
+  }, [setRefreshTimer, preventRefresh, timerId, postDataToOtherClientTabs]);
 };
 
 const clearTimeoutIfexist = (

@@ -12,11 +12,10 @@ import { Document } from "./components/document";
 import { i18nCookie } from "./utils/i18n.server";
 import { getAuthSession } from "./utils/auth.server";
 import { checkToken } from "./endpoints/mutation/auth";
+import { ClientsTabProvider } from "./context/clientsTab";
 
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import type { RootLoaderData } from "./types/data";
-import { AuthProvider } from "./context/auth";
-import { ClientsTabProvider } from "./context/clientsTab";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -36,7 +35,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   const themeSession = await getThemeSession(request);
   const authSession = await getAuthSession(request);
 
-  const token = authSession.getToken();
+  const requestText = await request.text();
+  const form = new URLSearchParams(requestText);
+  const tokenFromForm = form.get("token");
+
+  const token = tokenFromForm || authSession.getToken();
 
   const headers = new Headers();
   headers.append("Set-Cookie", await i18nCookie.serialize(locale));
@@ -57,6 +60,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
     if (!token) return redirect("/login");
     const response = await checkToken(token);
+
     if (response.data.checkToken?.token) {
       return json(
         { ...appearanceData, authInfo: response.data.checkToken },
@@ -76,28 +80,17 @@ export let handle = {
 };
 
 export default function App() {
-  const data = useLoaderData<RootLoaderData>();
-
-  const checkTokenData = data?.authInfo
-    ? {
-        ...data.authInfo,
-        expiresIn: data.authInfo.expiresIn
-          ? new Date(data.authInfo.expiresIn)
-          : null,
-      }
-    : null;
+  const { theme } = useLoaderData<RootLoaderData>();
 
   return (
     <ClientsTabProvider>
-      <AuthProvider authInfo={checkTokenData}>
-        <ThemeProvider specifiedTheme={data?.theme}>
-          <ApolloProvider client={client}>
-            <Document>
-              <Outlet />
-            </Document>
-          </ApolloProvider>
-        </ThemeProvider>
-      </AuthProvider>
+      <ThemeProvider specifiedTheme={theme}>
+        <ApolloProvider client={client}>
+          <Document>
+            <Outlet />
+          </Document>
+        </ApolloProvider>
+      </ThemeProvider>
     </ClientsTabProvider>
   );
 }

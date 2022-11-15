@@ -20,5 +20,12 @@ export const useBroadcastChannel = (name: string) => {
     [broadcastChannel]
   );
 
-  return { postMessage, listenToMessage };
+  const removeMessageListener = useCallback(
+    (callback: (event: MessageEvent) => void) => {
+      broadcastChannel?.removeEventListener("message", callback);
+    },
+    [broadcastChannel]
+  );
+
+  return { postMessage, listenToMessage, removeMessageListener };
 };

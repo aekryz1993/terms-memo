@@ -34,12 +34,6 @@ const loginMock = apiGraph.mutation("Login", (req, res, ctx) => {
   );
 
   return res(
-    // ctx.cookie("refresh_token", loginData.token, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: "lax",
-    //   expires: loginData.expiresIn,
-    // }),
     ctx.data({
       login: loginData,
     })
@@ -70,12 +64,6 @@ const signupMock = apiGraph.mutation("Signup", (req, res, ctx) => {
   );
 
   return res(
-    // ctx.cookie("refresh_token", loginData.token, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: "lax",
-    //   expires: loginData.expiresIn,
-    // }),
     ctx.data({
       signup: loginData,
     })
@@ -86,11 +74,7 @@ const refreshTokenMock = apiGraph.mutation("RefreshToken", (req, res, ctx) => {
   try {
     const { user } = validAuth(req);
 
-    if (!user)
-      return res(
-        // ctx.cookie("refresh_token", "", { maxAge: 0 }),
-        ctx.errors([forbiddenError])
-      );
+    if (!user) return res(ctx.errors([forbiddenError]));
 
     const token = jwt.sign({ sub: user.username, iat: Date.now() }, secretJWT, {
       expiresIn: expiresIn().getTime(),
@@ -105,12 +89,6 @@ const refreshTokenMock = apiGraph.mutation("RefreshToken", (req, res, ctx) => {
     );
 
     return res(
-      // ctx.cookie("refresh_token", authData.token, {
-      //   httpOnly: true,
-      //   secure: true,
-      //   sameSite: "lax",
-      //   expires: authData.expiresIn,
-      // }),
       ctx.data({
         refreshToken: authData,
       })
@@ -124,11 +102,7 @@ const checkTokenMock = apiGraph.mutation("CheckToken", (req, res, ctx) => {
   try {
     const { user, token, expires } = validAuth(req);
 
-    if (!user || !token)
-      return res(
-        // ctx.cookie("refresh_token", "", { maxAge: 0 }),
-        ctx.errors([forbiddenError])
-      );
+    if (!user || !token) return res(ctx.errors([forbiddenError]));
 
     const authData = loginDataResponse(user.username, token, expires);
 
@@ -146,14 +120,9 @@ const logoutMock = apiGraph.mutation("Logout", (req, res, ctx) => {
   try {
     const { user, token } = validAuth(req);
 
-    if (!user || !token)
-      return res(
-        // ctx.cookie("refresh_token", "", { maxAge: 0 }),
-        ctx.errors([forbiddenError])
-      );
+    if (!user || !token) return res(ctx.errors([forbiddenError]));
 
     return res(
-      // ctx.cookie("refresh_token", "", { maxAge: 0 }),
       ctx.data({
         logout: { statusCode: 200 },
       })

@@ -11,13 +11,9 @@ const apiGraph =
     : graphql.link("http://localhost:4000/graphql");
 
 const getToken = (req: GraphQLRequest<GraphQLVariables>) => {
-  // const { refresh_token } = req.cookies;
-  // console.log("cookie: ", refresh_token);
   const headers = new Headers(req.headers);
   const token = headers.get("authorization")?.replace("Bearer ", "");
 
-  // if (token === "null" || token === "undefined" || refresh_token !== token)
-  //   return null;
   return token;
 };
 
