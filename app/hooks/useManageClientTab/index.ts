@@ -58,5 +58,7 @@ export const useManageClientTab = () => {
   return {
     isController: clients?.length && tabId ? clients[0] === tabId : false,
     numClients: clients?.length ?? 0,
+    currentTabId: tabId,
+    clients,
   };
 };

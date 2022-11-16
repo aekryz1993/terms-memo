@@ -1,4 +1,4 @@
-import { Form, useTransition } from "@remix-run/react";
+import { useTransition } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 
 import { Portal } from "../Portal";
@@ -27,15 +27,6 @@ export const SetsLayout = () => {
       ) : (
         <Sets setIsOpenAddSet={setIsOpenAddSet} />
       )}
-
-      {/*! TODO: to be removed*/}
-      <div className="user-info">
-        <Form action="/logout" method="post" replace>
-          <button type="submit" className="button">
-            Logout
-          </button>
-        </Form>
-      </div>
     </>
   );
 };

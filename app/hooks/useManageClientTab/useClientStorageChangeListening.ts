@@ -1,10 +1,13 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 export const useClientStorageChangeListening = (setStoredClients: any) => {
+  const doUpdateRef = useRef(true);
+
   const handleStorageChange = useCallback(
     (event: StorageEvent) => {
       if (event.key === "clients") {
-        setStoredClients(JSON.parse(event.newValue as string));
+        if (doUpdateRef.current)
+          setStoredClients(JSON.parse(event.newValue as string));
       }
     },
     [setStoredClients]
@@ -15,6 +18,7 @@ export const useClientStorageChangeListening = (setStoredClients: any) => {
 
     return () => {
       window.addEventListener("storage", handleStorageChange);
+      doUpdateRef.current = false;
     };
   }, [handleStorageChange]);
 };

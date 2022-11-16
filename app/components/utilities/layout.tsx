@@ -16,13 +16,7 @@ const Box = (props: TBoxProps) => {
   );
 };
 
-const Container = ({
-  children,
-  newClasses,
-}: {
-  children: React.ReactNode;
-  newClasses: string;
-}) => <Box newClasses={newClasses}>{children}</Box>;
+const Container = (props: TBoxProps) => <Box {...props}>{props.children}</Box>;
 
 const VStack = ({
   children,

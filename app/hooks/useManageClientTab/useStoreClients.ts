@@ -20,8 +20,15 @@ export const useStoreClients = ({
   useEffect(() => {
     if (!resetClientsCondition) return;
 
-    setClients((prevState: number[]) =>
-      prevState?.length > 0 ? [...prevState, tabId] : [tabId]
-    );
+    let doUpdate = true;
+
+    if (doUpdate)
+      setClients((prevState: number[]) =>
+        prevState?.length > 0 ? [...prevState, tabId] : [tabId]
+      );
+
+    return () => {
+      doUpdate = false;
+    };
   }, [setClients, tabId, resetClientsCondition]);
 };

@@ -8,6 +8,8 @@ import { useControllerTask } from "./useControllerTask";
 
 import type { TAuthInfo } from "~/types/data";
 import { useReceiveMessage } from "./useReceiveMessage";
+import { usePostLoginMessage } from "./usePostLoginMessage";
+import { usePostLogoutMessage } from "./usePostLogoutMessage";
 
 export const useRefreshToken = (authInfo: TAuthInfo | null) => {
   const { postMessage, listenToMessage, removeMessageListener } =
@@ -21,19 +23,31 @@ export const useRefreshToken = (authInfo: TAuthInfo | null) => {
 
   const savePersistRefresh = useCallbackRef(persistRefreshAuth);
 
+  usePostLoginMessage({
+    token: authInfo?.token,
+    numClients,
+    postMessage,
+  });
+
+  usePostLogoutMessage({
+    token: authInfo?.token,
+    numClients,
+    isController,
+    postMessage,
+  });
+
   useReceiveMessage({
     listenToMessage,
     removeMessageListener,
     savePersistRefresh,
     isController,
     timerId,
+    token: authInfo?.token,
   });
-
-  const preventRefresh = !isController || !authInfo?.token;
 
   useControllerTask({
     numClients,
-    preventRefresh,
+    isController,
     savePersistRefresh,
     token: authInfo?.token,
     expiresIn: authInfo?.expiresIn,

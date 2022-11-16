@@ -7,7 +7,7 @@ import { useSetRefreshTimer } from "./useSetRefreshTimer";
 
 export const useControllerTask = ({
   numClients,
-  preventRefresh,
+  isController,
   savePersistRefresh,
   token,
   expiresIn,
@@ -15,7 +15,7 @@ export const useControllerTask = ({
   postMessage,
 }: {
   numClients: number;
-  preventRefresh: boolean;
+  isController: boolean;
   savePersistRefresh: React.MutableRefObject<any>;
   token?: string | null;
   expiresIn?: Date | null;
@@ -23,6 +23,8 @@ export const useControllerTask = ({
   postMessage: (data: any) => void;
 }) => {
   const delayTimeout = useDeepMemo(expiresIn, compareDate);
+
+  const preventRefresh = !isController || !token;
 
   const setRefreshTimer = useSetRefreshTimer({
     savePersistRefresh,

@@ -4,7 +4,7 @@ import GlobalLineIcon from "remixicon-react/GlobalLineIcon";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 
-import { Box } from "../utilities/layout";
+import { Box, Container } from "../utilities/layout";
 import { dropDownSlot, appearanceBtnClsx } from "./styled";
 import { Dropdown } from "../utilities/dropdown";
 
@@ -16,8 +16,8 @@ export const Language = () => {
   const { i18n } = useTranslation();
 
   return (
-    <button
-      className={clsx(appearanceBtnClsx, isOpened && "z-50")}
+    <Container
+      newClasses={clsx(appearanceBtnClsx, isOpened && "z-50")}
       onClick={() => setIsOpened((prev) => !prev)}
     >
       <GlobalLineIcon size="24" />
@@ -42,6 +42,6 @@ export const Language = () => {
           </Fragment>
         ))}
       </Dropdown>
-    </button>
+    </Container>
   );
 };

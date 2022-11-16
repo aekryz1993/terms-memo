@@ -2,7 +2,13 @@ import { createContext, useContext } from "react";
 import { useManageClientTab } from "~/hooks/useManageClientTab";
 
 const ClientsTabContext = createContext<
-  { isController: boolean; numClients: number } | undefined
+  | {
+      isController: boolean;
+      numClients: number;
+      currentTabId: number;
+      clients: number[];
+    }
+  | undefined
 >(undefined);
 
 export const ClientsTabProvider = ({
@@ -10,10 +16,13 @@ export const ClientsTabProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { isController, numClients } = useManageClientTab();
+  const { isController, numClients, currentTabId, clients } =
+    useManageClientTab();
 
   return (
-    <ClientsTabContext.Provider value={{ isController, numClients }}>
+    <ClientsTabContext.Provider
+      value={{ isController, numClients, currentTabId, clients }}
+    >
       {children}
     </ClientsTabContext.Provider>
   );

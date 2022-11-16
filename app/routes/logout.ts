@@ -6,19 +6,22 @@ import { getAuthSession } from "~/utils/auth.server";
 import type { ActionFunction } from "@remix-run/node";
 
 export const action: ActionFunction = async ({ request }) => {
-  const authSession = await getAuthSession(request);
+  const form = await request.formData();
+  const isController = form.get("isController");
 
-  const token = authSession.getToken();
+  if (isController) {
+    const authSession = await getAuthSession(request);
 
-  await logout(token);
+    const token = authSession.getToken();
 
-  return redirect("/login", {
-    headers: {
-      "Set-Cookie": await authSession.destroy(),
-    },
-  });
-};
+    await logout(token);
 
-export const loader = () => {
-  return redirect("/");
+    return redirect("/login", {
+      headers: {
+        "Set-Cookie": await authSession.destroy(),
+      },
+    });
+  }
+
+  return redirect("/login");
 };
