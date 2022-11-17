@@ -41,6 +41,7 @@ export interface SetsLoaderData {
 
 export interface RootLoaderData {
   locale: string;
+  pathname: string;
   lngs: { [key: string]: { nativeName: string } };
   theme: Theme | null;
   authInfo: TAuthInfo | null;

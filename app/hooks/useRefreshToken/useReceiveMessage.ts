@@ -2,6 +2,8 @@ import { useCallback, useEffect } from "react";
 
 import { clearTimeoutIfexist } from ".";
 
+import type { TListenEventCallback } from "../useBroadcastChannel";
+
 export interface MessageData {
   token?: string | null;
   reload?: boolean;
@@ -17,12 +19,8 @@ export const useReceiveMessage = ({
   timerId,
   token,
 }: {
-  listenToMessage: (
-    callback: (event: MessageEvent<MessageData>) => void
-  ) => void;
-  removeMessageListener: (
-    callback: (event: MessageEvent<MessageData>) => void
-  ) => void;
+  listenToMessage: TListenEventCallback<MessageData>;
+  removeMessageListener: TListenEventCallback<MessageData>;
   savePersistRefresh: React.MutableRefObject<any>;
   isController: boolean;
   timerId: React.MutableRefObject<number | NodeJS.Timeout | null>;

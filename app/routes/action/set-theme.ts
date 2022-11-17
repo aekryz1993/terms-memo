@@ -23,5 +23,3 @@ export const action: ActionFunction = async ({ request }) => {
     { headers: { "Set-Cookie": await themeSession.commit() } }
   );
 };
-
-// export const loader: LoaderFunction = () => redirect("/", { status: 404 });

@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from "@remix-run/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import GlobalLineIcon from "remixicon-react/GlobalLineIcon";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Box, Container } from "../utilities/layout";
 import { dropDownSlot, appearanceBtnClsx } from "./styled";
 import { Dropdown } from "../utilities/dropdown";
+import { useLanguageBroadcast } from "~/hooks/useLanguageBroadcast";
 
 import type { RootLoaderData } from "~/types/data";
 
@@ -14,6 +15,12 @@ export const Language = () => {
   const [isOpened, setIsOpened] = useState(false);
   const { lngs } = useLoaderData<RootLoaderData>();
   const { i18n } = useTranslation();
+
+  useLanguageBroadcast(i18n.language);
+
+  useEffect(() => {
+    console.log(i18n.language);
+  }, [i18n.language]);
 
   return (
     <Container

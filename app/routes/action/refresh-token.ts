@@ -31,5 +31,3 @@ export const action: ActionFunction = async ({ request }) => {
     return await destroyAndRedirect(authSession.destroy);
   }
 };
-
-// export const loader: LoaderFunction = () => redirect("/", { status: 404 });

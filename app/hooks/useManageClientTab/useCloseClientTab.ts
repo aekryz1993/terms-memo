@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useBeforeUnload } from "@remix-run/react";
+import { useCallback } from "react";
 
 export const useCloseClientTab = (
   tabId: number,
   isUnloadRef: React.MutableRefObject<boolean>
 ) => {
-  useEffect(() => {
-    function handleTabClose(event: BeforeUnloadEvent) {
-      event.preventDefault();
+  useBeforeUnload(
+    useCallback(() => {
       isUnloadRef.current = true;
       const storedClients = window.localStorage.getItem("clients");
       if (storedClients) {
@@ -15,12 +15,6 @@ export const useCloseClientTab = (
         );
         window.localStorage.setItem("clients", JSON.stringify(filtredClients));
       }
-    }
-
-    window.addEventListener("beforeunload", handleTabClose);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleTabClose);
-    };
-  }, [tabId, isUnloadRef]);
+    }, [isUnloadRef, tabId])
+  );
 };

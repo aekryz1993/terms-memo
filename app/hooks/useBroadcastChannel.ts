@@ -1,5 +1,9 @@
 import { useCallback, useMemo } from "react";
 
+export type TListenEventCallback<T> = (
+  callback: (event: MessageEvent<T>) => void
+) => void;
+
 export const useBroadcastChannel = (name: string) => {
   const broadcastChannel = useMemo(() => {
     if (typeof window === "undefined") return undefined;
@@ -27,5 +31,10 @@ export const useBroadcastChannel = (name: string) => {
     [broadcastChannel]
   );
 
-  return { postMessage, listenToMessage, removeMessageListener };
+  return {
+    postMessage,
+    listenToMessage,
+    removeMessageListener,
+    broadcastChannel,
+  };
 };

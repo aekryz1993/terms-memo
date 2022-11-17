@@ -46,6 +46,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const appearanceData = {
     locale,
+    pathname,
     lngs: languages,
     theme: themeSession.getTheme(),
   };
