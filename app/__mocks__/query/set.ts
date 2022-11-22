@@ -2,21 +2,23 @@ import { apiGraph, validAuth } from "../helpers";
 import { forbiddenError } from "../mocks/auth";
 import { getSets } from "../mocks/set";
 
-const fetchSetsMock = () =>
-  apiGraph.query("Sets", (req, res, ctx) => {
+import type { TSetDB } from "~/types/db";
+
+const fetchSetsMock = (sets: TSetDB[]) =>
+  apiGraph.query("Sets", async (req, res, ctx) => {
     const { skip, take } = req.variables;
 
-    const user = validAuth(req);
+    const { user } = await validAuth(req);
 
     if (!user) return res(ctx.errors([forbiddenError]));
 
-    const sets = getSets(skip, take);
+    const fetchSets = getSets(sets, { skip, take });
 
     return res(
       ctx.data({
-        sets,
+        fetchSets,
       })
     );
   });
 
-export const set = () => [fetchSetsMock()];
+export const set = (sets: TSetDB[]) => [fetchSetsMock(sets)];

@@ -37,6 +37,10 @@ export interface AuthLoaderData {
 // export interface SetsLoaderData extends AuthLoaderData {
 export interface SetsLoaderData {
   sets: TSet[];
+  tatolSets: number;
+  totalPages: number;
+  currentPage: number;
+  token: string;
 }
 
 export interface RootLoaderData {

@@ -37,16 +37,18 @@ export const useReceiveMessage = ({
             { action: "/action/destroy-token", method: "post" }
           );
         }
-        return;
+        // return;
       }
-      if (data.reload && data.pathname !== "logout") {
+      // if (data.reload && data.pathname !== "logout") {
+      else if (data.reload && data.pathname !== "logout") {
         window.location.reload();
-        return;
+        // return;
+      } else {
+        savePersistRefresh.current.submit(
+          { token: data.token },
+          { action: ".", method: "get" }
+        );
       }
-      savePersistRefresh.current.submit(
-        { token: data.token },
-        { action: ".", method: "get" }
-      );
     },
     [savePersistRefresh, isController, token]
   );

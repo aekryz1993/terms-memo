@@ -6,7 +6,8 @@ const invalid_token = "invalid_token";
 
 const expiresIn = () => new Date(Date.now() + 1000 * 20);
 
-const secretJWT = "s3cr3t";
+const secretJWT = new TextEncoder().encode("s3cr3t");
+const alg = "HS256";
 
 const newUserBody: Readonly<TUserBody> = {
   username: "new_user",
@@ -49,14 +50,18 @@ const newUser: Readonly<TUser> = {
   __typename: Typename.User,
 };
 
-const loginDataResponse = (username: string, token: string, expires: Date) => ({
+const loginDataResponse = (
+  username: string,
+  token: string,
+  expiresIn: Date
+) => ({
   user: {
     id: username,
     username,
     __typename: "User",
   },
   token,
-  expiresIn: expires,
+  expiresIn,
   statusCode: 200,
 });
 
@@ -80,6 +85,7 @@ export {
   invalid_token,
   expiresIn,
   secretJWT,
+  alg,
   existUser,
   notExistUser,
   notMatchPassword,

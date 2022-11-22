@@ -3,9 +3,7 @@ import { json, redirect } from "@remix-run/node";
 import { validatePassword, validateUsername } from "~/utils/helpers";
 import { AuthLayout } from "~/components/auth";
 import { login, signup } from "~/endpoints/mutation/auth";
-import {
-  setupToken,
-} from "~/utils/auth.server";
+import { setupToken } from "~/utils/auth.server";
 
 import type { LoginActionData } from "~/types/data";
 import type { ActionFunction } from "@remix-run/node";

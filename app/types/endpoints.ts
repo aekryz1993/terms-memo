@@ -25,6 +25,7 @@ export interface TCardBody {
 export interface TSet extends TSetBody {
   id: string;
   userId: string;
+  updatedAt: string;
   // __typename: Typename.Set;
 }
 

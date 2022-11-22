@@ -3,8 +3,8 @@ import { json, redirect } from "@remix-run/node";
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react";
 
 import i18next from "~/i18next.server";
-import client from "./apollo-client";
 import styles from "./styles/app.css";
+import client from "./apollo-client";
 import { languages } from "./utils/helpers";
 import { ThemeProvider } from "./context/theme";
 import { getThemeSession } from "./utils/theme.server";
@@ -56,6 +56,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       if (!token)
         return json({ ...appearanceData, authInfo: null }, { headers });
       const response = await checkToken(token);
+
       if (response.data.checkToken?.token) return redirect("/");
     }
 

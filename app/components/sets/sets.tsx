@@ -1,32 +1,31 @@
-import { PrimaryButton } from "../utilities/buttons";
 import { useLoaderData } from "@remix-run/react";
+
+import { GridContainer } from "./styled";
+import { SetCard } from "./set-card";
+import { Pagination } from "./pagination";
+import { useSetContext } from "~/context/set";
 
 import type { SetsLoaderData } from "~/types/data";
 
-interface TProps {
-  setIsOpenAddSet: React.Dispatch<React.SetStateAction<boolean>>;
-}
+export const Sets = () => {
+  const { totalPages } = useLoaderData<SetsLoaderData>();
 
-export const Sets = ({ setIsOpenAddSet }: TProps) => {
-  const { sets } = useLoaderData<SetsLoaderData>();
+  const {
+    state: { currentSets },
+  } = useSetContext();
 
   return (
     <>
-      {sets.length === 0 ? (
+      {currentSets.length === 0 ? (
         <p>There is any set yet. Add your first set.</p>
       ) : (
-        <ul>
-          {sets.map((set) => (
-            <li key={set.id}>
-              <h3>{set.title}</h3>
-              <p>{set.description}</p>
-            </li>
+        <GridContainer>
+          {currentSets.map((set) => (
+            <SetCard set={set} key={set.id} />
           ))}
-        </ul>
+        </GridContainer>
       )}
-      <PrimaryButton type="button" onClick={() => setIsOpenAddSet(true)}>
-        Add New Set
-      </PrimaryButton>
+      <Pagination totalPages={totalPages} />
     </>
   );
 };

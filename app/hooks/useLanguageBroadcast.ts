@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { createBrowserHistory } from "history";
 import { useLoaderData } from "@remix-run/react";
 
 import { useBroadcastChannel } from "./useBroadcastChannel";
+import { useHistory } from "./useHistory";
 
 export const useLanguageBroadcast = (locale: string) => {
   const currentLocaleRef = useRef(locale);
@@ -12,9 +12,7 @@ export const useLanguageBroadcast = (locale: string) => {
 
   const receiverRef = useRef(false);
 
-  const historyRef = useRef(
-    typeof window !== "undefined" ? createBrowserHistory() : undefined
-  );
+  const historyRef = useHistory();
 
   const { postMessage, listenToMessage, removeMessageListener } =
     useBroadcastChannel("locale");
@@ -27,7 +25,7 @@ export const useLanguageBroadcast = (locale: string) => {
       postMessage({ locale });
       currentLocaleRef.current = locale;
     } else if (receiverRef.current) receiverRef.current = false;
-  }, [locale, postMessage, pathname]);
+  }, [locale, postMessage, pathname, historyRef]);
 
   const callback = useCallback(
     ({ data }: { data: { locale: string } }) => {
@@ -39,7 +37,7 @@ export const useLanguageBroadcast = (locale: string) => {
         window.location.reload();
       });
     },
-    [i18n, pathname]
+    [historyRef, i18n, pathname]
   );
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { rest } from "msw";
-import jwt from "jsonwebtoken";
+import { jwtVerify, SignJWT } from "jose";
+
 import {
   authPasswordError,
   authUsernameError,
@@ -7,11 +8,12 @@ import {
   forbiddenError,
   loginDataResponse,
   secretJWT,
+  alg,
 } from "../mocks/auth";
 import { checkPassword, existUserError, findUser, users } from "../mocks/users";
 import { apiGraph, validAuth } from "../helpers";
 
-const loginMock = apiGraph.mutation("Login", (req, res, ctx) => {
+const loginMock = apiGraph.mutation("Login", async (req, res, ctx) => {
   const { username, password } = req.variables;
 
   const user = findUser(username);
@@ -21,16 +23,18 @@ const loginMock = apiGraph.mutation("Login", (req, res, ctx) => {
   if (!checkPassword(user)(password))
     return res(ctx.errors([authPasswordError]));
 
-  const token = jwt.sign({ sub: username, iat: Date.now() }, secretJWT, {
-    expiresIn: expiresIn().getTime(),
-  });
+  const token = await new SignJWT({ sub: username })
+    .setProtectedHeader({ alg })
+    .setIssuedAt()
+    .setExpirationTime(expiresIn().getTime())
+    .sign(secretJWT);
 
-  const jwtPayload = jwt.verify(token, secretJWT) as jwt.JwtPayload;
+  const { payload: jwtPayload } = await jwtVerify(token, secretJWT);
 
   const loginData = loginDataResponse(
     username,
     token,
-    new Date((jwtPayload.exp as number) - (jwtPayload.iat as number))
+    new Date(jwtPayload.exp as number)
   );
 
   return res(
@@ -40,7 +44,7 @@ const loginMock = apiGraph.mutation("Login", (req, res, ctx) => {
   );
 });
 
-const signupMock = apiGraph.mutation("Signup", (req, res, ctx) => {
+const signupMock = apiGraph.mutation("Signup", async (req, res, ctx) => {
   const { username, password } = req.variables;
 
   const user = findUser(username);
@@ -51,16 +55,18 @@ const signupMock = apiGraph.mutation("Signup", (req, res, ctx) => {
     users.push({ id: username, username, password });
   }
 
-  const token = jwt.sign({ sub: username, iat: Date.now() }, secretJWT, {
-    expiresIn: expiresIn().getTime(),
-  });
+  const token = await new SignJWT({ sub: username })
+    .setProtectedHeader({ alg })
+    .setIssuedAt()
+    .setExpirationTime(expiresIn().getTime())
+    .sign(secretJWT);
 
-  const jwtPayload = jwt.verify(token, secretJWT) as jwt.JwtPayload;
+  const { payload: jwtPayload } = await jwtVerify(token, secretJWT);
 
   const loginData = loginDataResponse(
     username,
     token,
-    new Date((jwtPayload.exp as number) - (jwtPayload.iat as number))
+    new Date(jwtPayload.exp as number)
   );
 
   return res(
@@ -70,55 +76,63 @@ const signupMock = apiGraph.mutation("Signup", (req, res, ctx) => {
   );
 });
 
-const refreshTokenMock = apiGraph.mutation("RefreshToken", (req, res, ctx) => {
-  try {
-    const { user } = validAuth(req);
+const refreshTokenMock = apiGraph.mutation(
+  "RefreshToken",
+  async (req, res, ctx) => {
+    try {
+      const { user } = await validAuth(req);
 
-    if (!user) return res(ctx.errors([forbiddenError]));
+      if (!user) return res(ctx.errors([forbiddenError]));
 
-    const token = jwt.sign({ sub: user.username, iat: Date.now() }, secretJWT, {
-      expiresIn: expiresIn().getTime(),
-    });
+      const token = await new SignJWT({ sub: user.id })
+        .setProtectedHeader({ alg })
+        .setIssuedAt()
+        .setExpirationTime(expiresIn().getTime())
+        .sign(secretJWT);
 
-    const jwtPayload = jwt.verify(token, secretJWT) as jwt.JwtPayload;
+      const { payload: jwtPayload } = await jwtVerify(token, secretJWT);
 
-    const authData = loginDataResponse(
-      user.username,
-      token,
-      new Date((jwtPayload.exp as number) - (jwtPayload.iat as number))
-    );
+      const authData = loginDataResponse(
+        user.username,
+        token,
+        new Date(jwtPayload.exp as number)
+      );
 
-    return res(
-      ctx.data({
-        refreshToken: authData,
-      })
-    );
-  } catch {
-    return res(ctx.errors([forbiddenError]));
+      return res(
+        ctx.data({
+          refreshToken: authData,
+        })
+      );
+    } catch {
+      return res(ctx.errors([forbiddenError]));
+    }
   }
-});
+);
 
-const checkTokenMock = apiGraph.mutation("CheckToken", (req, res, ctx) => {
-  try {
-    const { user, token, expires } = validAuth(req);
+const checkTokenMock = apiGraph.mutation(
+  "CheckToken",
+  async (req, res, ctx) => {
+    try {
+      const { user, token, expires } = await validAuth(req);
 
-    if (!user || !token) return res(ctx.errors([forbiddenError]));
+      if (!user || !token) return res(ctx.errors([forbiddenError]));
 
-    const authData = loginDataResponse(user.username, token, expires);
+      const authData = loginDataResponse(user.username, token, expires);
 
-    return res(
-      ctx.data({
-        checkToken: authData,
-      })
-    );
-  } catch {
-    return res(ctx.errors([forbiddenError]));
+      return res(
+        ctx.data({
+          checkToken: authData,
+        })
+      );
+    } catch {
+      return res(ctx.errors([forbiddenError]));
+    }
   }
-});
+);
 
-const logoutMock = apiGraph.mutation("Logout", (req, res, ctx) => {
+const logoutMock = apiGraph.mutation("Logout", async (req, res, ctx) => {
   try {
-    const { user, token } = validAuth(req);
+    const { user, token } = await validAuth(req);
 
     if (!user || !token) return res(ctx.errors([forbiddenError]));
 

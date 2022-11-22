@@ -1,5 +1,5 @@
 import { graphql } from "msw";
-import jwt from "jsonwebtoken";
+import { jwtVerify } from "jose";
 
 import type { GraphQLRequest, GraphQLVariables } from "msw";
 import { findUser } from "./mocks/users";
@@ -17,18 +17,16 @@ const getToken = (req: GraphQLRequest<GraphQLVariables>) => {
   return token;
 };
 
-const validAuth = (req: GraphQLRequest<GraphQLVariables>) => {
+const validAuth = async (req: GraphQLRequest<GraphQLVariables>) => {
   const token = getToken(req);
 
   if (!token) return { user: null, token: null, expires: null };
 
-  const jwtPayload = jwt.verify(token, secretJWT) as jwt.JwtPayload;
+  const { payload: jwtPayload } = await jwtVerify(token, secretJWT);
 
   const user = jwtPayload.sub && findUser(jwtPayload.sub);
 
-  const expires = new Date(
-    (jwtPayload.exp as number) - (jwtPayload.iat as number)
-  );
+  const expires = new Date(jwtPayload.exp as number);
 
   return { user, token, expires };
 };

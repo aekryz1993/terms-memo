@@ -4,13 +4,19 @@ import { setContext } from "~/utils/helpers";
 
 import type { TPaginationParams } from "~/types/endpoints";
 
-const SETS = gql`
+export const SETS = gql`
   query Sets($skip: String!, $take: String!) {
-    sets(skip: $skip, take: $take) {
-      id
-      title
-      description
-      userId
+    fetchSets(skip: $skip, take: $take) {
+      sets {
+        id
+        title
+        description
+        userId
+        updatedAt
+      }
+      tatolSets
+      totalPages
+      currentPage
     }
   }
 `;

@@ -1,16 +1,15 @@
 import clsx from "clsx";
-import React from "react";
 
-interface TBoxProps extends React.ComponentProps<"div"> {
+interface TBoxProps extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
-  newClasses: string;
+  classes?: string;
 }
 
 const Box = (props: TBoxProps) => {
-  const { children, newClasses, className, ...divProps } = props;
+  const { children, classes, className, ...divProps } = props;
 
   return (
-    <div {...divProps} className={clsx([className, newClasses])}>
+    <div {...divProps} className={clsx([className, classes])}>
       {children}
     </div>
   );
@@ -20,18 +19,18 @@ const Container = (props: TBoxProps) => <Box {...props}>{props.children}</Box>;
 
 const VStack = ({
   children,
-  newClasses,
+  classes,
 }: {
   children: React.ReactNode;
-  newClasses?: string;
-}) => <Box newClasses={clsx([newClasses, "flex flex-row"])}>{children}</Box>;
+  classes?: string;
+}) => <Box classes={clsx([classes, "flex flex-row"])}>{children}</Box>;
 
 const HStack = ({
   children,
-  newClasses,
+  classes,
 }: {
   children: React.ReactNode;
-  newClasses?: string;
-}) => <Box newClasses={clsx([newClasses, "flex flex-col"])}>{children}</Box>;
+  classes?: string;
+}) => <Box classes={clsx([classes, "flex flex-col"])}>{children}</Box>;
 
 export { Container, Box, VStack, HStack };

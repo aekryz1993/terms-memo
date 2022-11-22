@@ -1,3 +1,5 @@
 import { set } from "./set";
 
-export const query = () => [...set()];
+import type { TDb } from "../handlers";
+
+export const query = ({ sets }: TDb) => [...set(sets)];

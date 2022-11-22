@@ -8,6 +8,7 @@ export interface TUserDB extends TUserBody {
 export interface TSetDB extends TSetBody {
   id: string;
   userId: string;
+  updatedAt: Date;
 }
 
 export interface TCardDB {

@@ -1,9 +1,12 @@
+import clsx from "clsx";
 import React from "react";
 
-function createRootElement(id: string) {
+function createRootElement(id: string, rootClass?: string) {
   const rootContainer = document.createElement("div");
   rootContainer.setAttribute("id", id);
-  rootContainer.classList.add("absolute", "top-0", "w-full", "h-full");
+  rootClass?.split(" ").forEach((cls) => {
+    if (cls) rootContainer.classList.add(cls);
+  });
   return rootContainer;
 }
 
@@ -15,16 +18,23 @@ function addRootElement(rootElem: Element) {
     );
 }
 
-export const usePortal = (
-  id: string,
-  clsx?: string,
-  handleClose?: () => void
-) => {
+export const usePortal = ({
+  id,
+  rootClass,
+  clsx,
+  handleClose,
+}: {
+  id: string;
+  rootClass?: string;
+  clsx?: string;
+  handleClose?: () => void;
+}) => {
   const rootElemRef = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
     const existingParent = document.querySelector(`#${id}`);
-    let parentElem: Element | null = existingParent || createRootElement(id);
+    let parentElem: Element | null =
+      existingParent || createRootElement(id, rootClass);
 
     if (!existingParent) {
       addRootElement(parentElem);

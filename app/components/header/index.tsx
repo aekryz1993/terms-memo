@@ -17,10 +17,10 @@ export const HeaderSection = () => {
   const { authInfo } = useLoaderData<RootLoaderData>();
 
   return (
-    <Container newClasses={containerClsx}>
+    <Container classes={containerClsx}>
       <Logo />
-      <VStack newClasses={rightSubContainerClsx}>
-        <VStack newClasses={appearanceClsx}>
+      <VStack classes={rightSubContainerClsx}>
+        <VStack classes={appearanceClsx}>
           <Language />
           <ThemeSwithch />
           {authInfo?.token ? <Account /> : null}

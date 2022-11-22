@@ -22,7 +22,7 @@ export const Account = () => {
 
   return (
     <Container
-      newClasses={clsx(appearanceBtnClsx, isOpened && "z-50")}
+      classes={clsx(appearanceBtnClsx, isOpened && "z-50")}
       onClick={() =>
         isLogoutOption.current
           ? setIsOpened(true)
@@ -36,7 +36,7 @@ export const Account = () => {
           <Fragment key={option.label}>
             {option.pathname === "logout" ? (
               <Box
-                newClasses={clsx(dropDownSlot, "whitespace-nowrap")}
+                classes={clsx(dropDownSlot, "whitespace-nowrap")}
                 onClick={() => {
                   isLogoutOption.current = true;
                 }}
@@ -57,7 +57,7 @@ export const Account = () => {
             ) : (
               <Link to={option.pathname}>
                 <Box
-                  newClasses={dropDownSlot}
+                  classes={dropDownSlot}
                   onClick={() => {
                     isLogoutOption.current = false;
                   }}

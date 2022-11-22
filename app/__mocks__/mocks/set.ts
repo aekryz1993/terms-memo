@@ -1,12 +1,13 @@
 import type { TSetDB } from "~/types/db";
 import type { TSetBody } from "~/types/endpoints";
 
-export const sets: TSetDB[] = [
+export const dbSets: () => TSetDB[] = () => [
   {
     id: "set_0",
     title: "set_0",
     description: "set_0_description",
     userId: "user_0",
+    updatedAt: new Date(Date.now()),
   },
 ];
 
@@ -20,19 +21,13 @@ export const newSet: Readonly<TSetBody> = {
   description: newSetBody.description,
 };
 
-export const createSetDataResponse = (newSet: TSetBody, userId: string) => ({
-  set: {
-    id: newSet.title,
-    title: newSet.title,
-    description: newSet.description,
-    userId,
-    __typename: "Set",
-  },
+export const createSetDataResponse = (newSet: TSetBody) => ({
+  set: newSet,
   statusCode: 200,
   message: "A new set is successfully created",
 });
 
-export const checkExistSet = (title: string) =>
+export const checkExistSet = (title: string, sets: TSetDB[]) =>
   sets.find((set) => set.title === title);
 
 export const existSetError = {
@@ -40,8 +35,18 @@ export const existSetError = {
   errorType: "UserInputError",
 };
 
-export const getSets = (skip: number, take: number) =>
-  sets.slice(skip).slice(0, take);
+export const getSets = (
+  sets: TSetDB[],
+  { skip, take }: { skip: number; take: number }
+) => {
+  const fetchedSets = sets.slice(skip).slice(0, take);
+  return {
+    sets: fetchedSets,
+    tatolSets: sets.length,
+    totalPages: Math.ceil(sets.length / take),
+    currentPage: skip / take + 1,
+  };
+};
 
 export const buildSet = ({
   title,

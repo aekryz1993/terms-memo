@@ -5,23 +5,32 @@ import {
   checkExistSet,
   createSetDataResponse,
   existSetError,
-  sets,
 } from "../mocks/set";
 import { apiGraph, validAuth } from "../helpers";
 
-const createSetMock = () =>
-  apiGraph.mutation("CreateSet", (req, res, ctx) => {
+import type { TSetDB } from "~/types/db";
+
+const createSetMock = (sets: TSetDB[]) =>
+  apiGraph.mutation("CreateSet", async (req, res, ctx) => {
     const { title, description } = req.variables;
 
-    const user = validAuth(req);
+    const { user } = await validAuth(req);
 
     if (!user) return res(ctx.errors([forbiddenError]));
 
-    const existSet = checkExistSet(title);
+    const existSet = checkExistSet(title, sets);
 
     if (existSet) return res(ctx.errors([existSetError]));
 
-    sets.push({ id: title, title, description, userId: user.id });
+    const newSet = {
+      id: title,
+      title,
+      description,
+      userId: user.id,
+      updatedAt: new Date(Date.now()),
+    };
+
+    sets.push(newSet);
 
     if (process.env.NODE_ENV !== "test") {
       [CardName.Perfect, CardName.Medium, CardName.Difficult].forEach(
@@ -37,9 +46,9 @@ const createSetMock = () =>
 
     return res(
       ctx.data({
-        createSet: createSetDataResponse({ title, description }, user.id),
+        createSet: createSetDataResponse(newSet),
       })
     );
   });
 
-export const set = () => [createSetMock()];
+export const set = (sets: TSetDB[]) => [createSetMock(sets)];

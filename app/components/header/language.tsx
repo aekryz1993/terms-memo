@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from "@remix-run/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import GlobalLineIcon from "remixicon-react/GlobalLineIcon";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
@@ -18,13 +18,9 @@ export const Language = () => {
 
   useLanguageBroadcast(i18n.language);
 
-  useEffect(() => {
-    console.log(i18n.language);
-  }, [i18n.language]);
-
   return (
     <Container
-      newClasses={clsx(appearanceBtnClsx, isOpened && "z-50")}
+      classes={clsx(appearanceBtnClsx, isOpened && "z-50")}
       onClick={() => setIsOpened((prev) => !prev)}
     >
       <GlobalLineIcon size="24" />
@@ -34,16 +30,13 @@ export const Language = () => {
           <Fragment key={lng}>
             {i18n.language == lng ? (
               <Box
-                newClasses={clsx(
-                  dropDownSlot,
-                  "bg-bg-sel_lt dark:bg-bg-sel_dark"
-                )}
+                classes={clsx(dropDownSlot, "bg-bg-sel_lt dark:bg-bg-sel_dark")}
               >
                 {lngs[lng].nativeName}
               </Box>
             ) : (
               <Link replace to={`?lng=${lng}`}>
-                <Box newClasses={dropDownSlot}>{lngs[lng].nativeName}</Box>
+                <Box classes={dropDownSlot}>{lngs[lng].nativeName}</Box>
               </Link>
             )}
           </Fragment>

@@ -20,3 +20,5 @@ export interface TKeyValue {
   key: string;
   value: string | null | undefined;
 }
+
+export type Dispatch = (...args: any) => void;

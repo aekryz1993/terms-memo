@@ -5,10 +5,12 @@ import { I18nextProvider, initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 import { getInitialNamespaces } from "remix-i18next";
+
 import i18n from "./i18n";
 
-if (typeof window === "object" && process.env.NODE_ENV === "test") {
+if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
   const { worker } = require("./__mocks__/browser");
+  console.log(worker);
   worker.start();
 }
 
