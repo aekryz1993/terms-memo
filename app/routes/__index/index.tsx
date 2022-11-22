@@ -4,7 +4,6 @@ import { useLoaderData } from "@remix-run/react";
 import { SetsLayout } from "~/components/sets";
 import { fetchSets } from "~/endpoints/query/sets";
 import { getAuthSession } from "~/utils/auth.server";
-import { SetProvider } from "~/context/set/provider";
 
 import type { LoaderFunction } from "@remix-run/node";
 import type { SetsLoaderData } from "~/types/data";
@@ -12,10 +11,21 @@ import type { SetsLoaderData } from "~/types/data";
 export const loader: LoaderFunction = async ({ request }) => {
   try {
     const authSession = await getAuthSession(request);
+    const url = new URL(request.url);
+    const skip = url.searchParams.get("skip");
+    const take = url.searchParams.get("take");
 
     const token = authSession.getToken();
 
-    const fetchSetsResponse = await fetchSets({ skip: 0, take: 15 }, token);
+    const pageToken = 16;
+
+    const fetchSetsResponse = await fetchSets(
+      {
+        skip: skip ? parseInt(skip) : 0,
+        take: take ? parseInt(take) : pageToken,
+      },
+      token
+    );
 
     const data: SetsLoaderData = {
       sets: fetchSetsResponse.data.fetchSets.sets,
@@ -23,6 +33,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       totalPages: fetchSetsResponse.data.fetchSets.totalPages,
       currentPage: fetchSetsResponse.data.fetchSets.currentPage,
       token,
+      take: pageToken,
     };
     return json(data);
   } catch (error: any) {
@@ -31,12 +42,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
 };
 
-export default function Index() {
-  const { sets, currentPage } = useLoaderData();
-
-  return (
-    <SetProvider sets={sets} currentPage={currentPage}>
-      <SetsLayout />
-    </SetProvider>
-  );
+export default function SetsPage() {
+  return <SetsLayout />;
 }

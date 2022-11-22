@@ -41,6 +41,7 @@ export interface SetsLoaderData {
   totalPages: number;
   currentPage: number;
   token: string;
+  take: number;
 }
 
 export interface RootLoaderData {

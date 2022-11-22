@@ -10,7 +10,6 @@ import i18n from "./i18n";
 
 if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
   const { worker } = require("./__mocks__/browser");
-  console.log(worker);
   worker.start();
 }
 
