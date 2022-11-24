@@ -14,6 +14,9 @@ export const Portal = ({
   handleClose?: () => void;
   children: React.ReactNode;
 }) => {
+  if (!canUseDOM()) {
+    return null;
+  }
   const target = usePortal({ id, rootClass, clsx, handleClose });
   return ReactDOM.createPortal(children, target);
 };

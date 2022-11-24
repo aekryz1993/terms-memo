@@ -20,11 +20,11 @@ export const Title = (props: THeaderProps) => {
     <h1
       {...headerProps}
       className={clsx(
-        className,
+        classes,
         titleClasses,
         titleClassesLight,
         titleClassesDark,
-        classes
+        className
       )}
     >
       {children}
@@ -42,11 +42,11 @@ export const SubTitle = (props: tParagraph) => {
     <p
       {...headerProps}
       className={clsx(
-        className,
+        classes,
         subTitleClasses,
         subTitleClassesLight,
         subTitleClassesDark,
-        classes
+        className
       )}
     >
       {children}
@@ -65,11 +65,11 @@ export const Paragraph = (props: tParagraph) => {
     <p
       {...headerProps}
       className={clsx(
-        className,
+        classes,
         paragraphClasses,
         paragraphClassesLight,
         paragraphClassesDark,
-        classes
+        className
       )}
     >
       {children}

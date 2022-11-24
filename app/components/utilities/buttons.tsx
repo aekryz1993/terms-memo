@@ -17,10 +17,10 @@ const PrimaryButton = (props: TButtonProps) => {
     <button
       {...buttonProps}
       className={clsx(
-        className,
+        classes,
         primaryBtnLightClasses,
         primaryBtnDarkClasses,
-        classes
+        className
       )}
     >
       {children}
@@ -35,13 +35,16 @@ const cancelBtnDarkClasses =
   "dark:bg-btn-cancel_dark dark:hover:bg-btn-cancel_hvr_dark dark:text-text-text_dark";
 
 const CancelButton = (props: TButtonProps) => {
-  const { children, classes, ...buttonProps } = props;
+  const { children, className, classes, ...buttonProps } = props;
   return (
     <button
       {...buttonProps}
-      className={`${cancelBtnLightClasses} ${cancelBtnDarkClasses} ${
-        classes ? classes : ""
-      }`}
+      className={clsx(
+        classes,
+        cancelBtnLightClasses,
+        cancelBtnDarkClasses,
+        className
+      )}
     >
       {children}
     </button>

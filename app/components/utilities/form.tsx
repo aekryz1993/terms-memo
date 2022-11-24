@@ -1,4 +1,5 @@
 import { Form as FormRemix } from "@remix-run/react";
+import clsx from "clsx";
 import { forwardRef } from "react";
 
 interface TFormProps extends React.ComponentPropsWithoutRef<typeof FormRemix> {
@@ -18,9 +19,11 @@ const Form = forwardRef(
       <FormRemix
         {...formProps}
         ref={ref}
-        className={`${primaryFormLightClasses} ${primaryFormDarkClasses} ${
-          classes ? classes : ""
-        }`}
+        className={clsx(
+          classes,
+          primaryFormLightClasses,
+          primaryFormDarkClasses
+        )}
       >
         {children}
       </FormRemix>

@@ -42,6 +42,7 @@ export interface SetsLoaderData {
   currentPage: number;
   token: string;
   take: number;
+  skip: number;
 }
 
 export interface RootLoaderData {

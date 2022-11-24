@@ -16,16 +16,12 @@ html.dark {
   --background-colour: #18191a;
 }
 
-/* :root,
+:root,
 html,
 body {
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
 }
-
-main {
-  height: 100%;
-} */
 
 @layer base {
   .logo-text {

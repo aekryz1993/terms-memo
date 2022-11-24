@@ -1,3 +1,10 @@
+import clsx from "clsx";
+
+interface TDivProps extends React.ComponentPropsWithoutRef<"div"> {
+  children: React.ReactNode;
+  classes?: string;
+}
+
 interface TInputProps extends React.ComponentPropsWithoutRef<"input"> {
   classes?: string;
 }
@@ -16,46 +23,50 @@ const primaryinputLightClasses = "bg-bg-input_lt";
 const primaryInputDarkClasses = "dark:bg-bg-input_dark";
 
 const LabelInput = (props: TLabelProps) => {
-  const { classes, children, ...labelProps } = props;
+  const { classes, className, children, ...labelProps } = props;
   return (
-    <label className={`${classes ? classes : ""}`} {...labelProps}>
+    <label className={clsx(classes, className)} {...labelProps}>
       {children}
     </label>
   );
 };
 
 const Input = (props: TInputProps) => {
-  const { classes, ...inputProps } = props;
+  const { classes, className, ...inputProps } = props;
   return (
     <input
       {...inputProps}
-      className={`${primaryinputLightClasses} ${primaryInputDarkClasses} ${
-        classes ? classes : ""
-      }`}
+      className={clsx(
+        classes ? classes : primaryinputLightClasses,
+        classes ? classes : primaryInputDarkClasses,
+        className
+      )}
     />
   );
 };
 
 const Textarea = (props: TTextareaProps) => {
-  const { classes, ...inputProps } = props;
+  const { classes, className, ...inputProps } = props;
   return (
     <textarea
       {...inputProps}
-      className={`${primaryinputLightClasses} ${primaryInputDarkClasses} ${
-        classes ? classes : ""
-      }`}
+      className={clsx(
+        classes,
+        primaryinputLightClasses,
+        primaryInputDarkClasses,
+        className
+      )}
     />
   );
 };
 
-const FormInputItem = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return <div className={`${className ? className : ""}`}>{children}</div>;
+const FormInputItem = (props: TDivProps) => {
+  const { children, className, classes, ...divProps } = props;
+  return (
+    <div {...divProps} className={clsx(classes, className)}>
+      {children}
+    </div>
+  );
 };
 
 export { LabelInput, Input, Textarea, FormInputItem };

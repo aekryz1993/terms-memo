@@ -4,8 +4,10 @@ interface TGridContainerProps extends React.ComponentProps<"ul"> {
   children: React.ReactNode;
 }
 
+const layoutContainer = "flex flex-col gap-12";
+
 const gridContainerclsx =
-  "grid gap-4 grid-cols-1 text-direction-ltr pb-10 select-none";
+  "grid gap-4 grid-cols-1 text-direction-ltr pb-20 select-none";
 const smGgridContainerclsx = "sm:grid-cols-2";
 const lgGridContainerclsx = "lg:gap-8 lg:grid-cols-3";
 const xlGridContainerclsx = "xl:gap-10 xl:grid-cols-4";
@@ -34,8 +36,8 @@ const headerClasses = "py-2";
 const descriptionClasses = "pt-4";
 
 const paginationRoot =
-  "inline-flex sticky bottom-6 w-full justify-center items-center select-none";
-const paginationContainer = "flex gap-2";
+  "inline-flex absolute bottom-6 w-full justify-center items-center select-none";
+const paginationContainer = "flex gap-1 sm:gap-2";
 
 const paginationItem = "drop-shadow-xl cursor-pointer rounded";
 const paginationItemLight = "bg-bg-sec_lt";
@@ -49,7 +51,17 @@ const selectedPage = "bg-bg-sel_lt text-white dark:bg-bg-sel_dark";
 
 const disableIcon = "opacity-40";
 
+const searchbarContainer = "sticky top-20 w-11/12 max-w-xl mx-auto";
+const searchInput =
+  "w-full pl-4 py-4 rounded-lg drop-shadow-lg bg-bg-sec_lt dark:bg-bg-input_dark";
+const searchBarIcon =
+  "absolute inline-block -translate-x-10 top-2/4 -translate-y-2/4 rotate-90";
+
+const searchCancelIcon =
+  "cursor-pointer text-text-inactive_lt dark:text-text-inactive_dark";
+
 export {
+  layoutContainer,
   GridContainer,
   headerClasses,
   descriptionClasses,
@@ -61,4 +73,8 @@ export {
   paginationItemDark,
   selectedPage,
   disableIcon,
+  searchbarContainer,
+  searchBarIcon,
+  searchInput,
+  searchCancelIcon,
 };

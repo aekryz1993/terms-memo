@@ -11,7 +11,7 @@ const Card = (props: TCardProps) => {
   const { children, className, ...divProps } = props;
 
   return (
-    <li {...divProps} className={clsx([className, cardClsx])}>
+    <li {...divProps} className={clsx([cardClsx, className])}>
       {children}
     </li>
   );

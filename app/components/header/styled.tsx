@@ -1,7 +1,7 @@
 import { Box } from "../utilities/layout";
 
 const containerClsx =
-  "sticky top-0 p-4 flex justify-between bg-bg-sec_lt dark:bg-bg-sec_dark shadow items-stretch";
+  "sticky top-0 p-4 z-40 flex justify-between bg-bg-sec_lt dark:bg-bg-sec_dark shadow items-stretch";
 
 const rightSubContainerClsx = "justify-between gap-8 items-center";
 

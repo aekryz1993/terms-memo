@@ -37,13 +37,19 @@ export const existSetError = {
 
 export const getSets = (
   sets: TSetDB[],
-  { skip, take }: { skip: number; take: number }
+  { skip, take, search }: { skip: number; take: number; search?: string }
 ) => {
-  const fetchedSets = sets.slice(skip).slice(0, take);
+  const searchedSets = search
+    ? sets.filter((set) =>
+        set.title.toLowerCase().includes(search.toLowerCase())
+      )
+    : sets;
+
+  const fetchedSets = searchedSets.slice(skip).slice(0, take);
   return {
     sets: fetchedSets,
-    tatolSets: sets.length,
-    totalPages: Math.ceil(sets.length / take),
+    tatolSets: searchedSets.length,
+    totalPages: Math.ceil(searchedSets.length / take),
     currentPage: skip / take + 1,
   };
 };

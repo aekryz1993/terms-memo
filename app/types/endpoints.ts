@@ -37,4 +37,5 @@ export interface TCard extends TCardBody {
 export interface TPaginationParams {
   skip: number;
   take: number;
+  search: string | null;
 }

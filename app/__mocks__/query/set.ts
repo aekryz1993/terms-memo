@@ -6,13 +6,13 @@ import type { TSetDB } from "~/types/db";
 
 const fetchSetsMock = (sets: TSetDB[]) =>
   apiGraph.query("Sets", async (req, res, ctx) => {
-    const { skip, take } = req.variables;
+    const { skip, take, search } = req.variables;
 
     const { user } = await validAuth(req);
 
     if (!user) return res(ctx.errors([forbiddenError]));
 
-    const fetchSets = getSets(sets, { skip, take });
+    const fetchSets = getSets(sets, { skip, take, search });
 
     return res(
       ctx.data({

@@ -9,7 +9,7 @@ const Box = (props: TBoxProps) => {
   const { children, classes, className, ...divProps } = props;
 
   return (
-    <div {...divProps} className={clsx([className, classes])}>
+    <div {...divProps} className={clsx([classes, className])}>
       {children}
     </div>
   );
