@@ -89,10 +89,10 @@ export const Pagination = () => {
 
 const itemClasses = (current?: number, target?: number) =>
   clsx(
-    paginationItem,
-    paginationItemLight,
-    paginationItemDark,
-    current && target && current === target ? selectedPage : null
+    current && target && current === target
+      ? selectedPage
+      : clsx(paginationItemLight, paginationItemDark),
+    paginationItem
   );
 
 const PageItem = ({

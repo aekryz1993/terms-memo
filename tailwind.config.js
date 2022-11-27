@@ -3,23 +3,28 @@ module.exports = {
   darkMode: "class",
   content: ["./app/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      rotate: {
+        315: "315deg",
+      },
+    },
     colors: {
       white: "#FFFFFF",
+      transparent: "transparent",
       bg: {
+        sel_lt: "#1A74E4",
         pry_lt: "#F1F2F5",
         sec_lt: "#FFFFFF",
         input_lt: "#f1f2f5",
         pry_hvr_lt: "#E4E5E8",
         sec_hvr_lt: "#F2F2F2",
-        sel_lt: "#1A74E4",
         // dark mode colors
+        sel_dark: "#2374E1",
         pry_dark: "#18191a",
         sec_dark: "#242526",
         input_dark: "#3A3B3C",
         pry_hvr_dark: "#2f3031",
         sec_hvr_dark: "#4E4F50",
-        sel_dark: "#2374E1",
       },
       text: {
         inactive_lt: "#65676b",

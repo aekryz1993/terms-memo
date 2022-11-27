@@ -4,7 +4,7 @@ interface TGridContainerProps extends React.ComponentProps<"ul"> {
   children: React.ReactNode;
 }
 
-const layoutContainer = "flex flex-col gap-12";
+const layoutContainer = "flex flex-col gap-12 px-8 pt-8";
 
 const gridContainerclsx =
   "grid gap-4 grid-cols-1 text-direction-ltr pb-20 select-none";
@@ -36,10 +36,10 @@ const headerClasses = "py-2";
 const descriptionClasses = "pt-4";
 
 const paginationRoot =
-  "inline-flex absolute bottom-6 w-full justify-center items-center select-none";
+  "inline-flex absolute bottom-6 w-full justify-center items-center select-none z-30";
 const paginationContainer = "flex gap-1 sm:gap-2";
 
-const paginationItem = "drop-shadow-xl cursor-pointer rounded";
+const paginationItem = "drop-shadow-2xl cursor-pointer rounded";
 const paginationItemLight = "bg-bg-sec_lt";
 const paginationItemDark =
   "dark:bg-bg-sec_dark dark:border-btn-disable_dark dark:border-[0.1px]";

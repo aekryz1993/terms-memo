@@ -1,7 +1,9 @@
 import { Form } from "@remix-run/react";
+
 import { PrimaryButton } from "../utilities/buttons";
 import { AuthFormInputs } from "./auth-form-inputs";
 import { TCurrentScreen } from ".";
+import { Box } from "../utilities/layout";
 
 import type { TScreenState } from ".";
 
@@ -11,7 +13,7 @@ export const Login = ({ setCurrentScreen, currentScreen }: TScreenState) => {
       <h1>Login</h1>
       <Form method="post" replace>
         <AuthFormInputs currentScreen={currentScreen} />
-        <div>
+        <Box>
           <span>Don't have an account yet?</span>
           <button
             type="button"
@@ -20,7 +22,7 @@ export const Login = ({ setCurrentScreen, currentScreen }: TScreenState) => {
           >
             Create a new account.
           </button>
-        </div>
+        </Box>
         <PrimaryButton type="submit">Login</PrimaryButton>
       </Form>
     </>

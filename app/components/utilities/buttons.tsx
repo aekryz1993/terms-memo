@@ -6,7 +6,7 @@ interface TButtonProps extends React.ComponentPropsWithoutRef<"button"> {
 }
 
 const primaryBtnLightClasses =
-  "bg-btn-bg_lt disabled:opacity-30 hover:bg-btn-hvr_lt text-white px-2 py-4";
+  "rounded drop-shadow text-xl tracking-widest font-black bg-btn-bg_lt disabled:opacity-30 hover:bg-btn-hvr_lt text-white px-2 py-4";
 
 const primaryBtnDarkClasses =
   "dark:bg-btn-bg_dark dark:disabled:bg-btn-disable_dark dark:hover:bg-btn-hvr_dark dark:text-text-sec_dark";

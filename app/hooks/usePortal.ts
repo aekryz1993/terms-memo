@@ -56,10 +56,10 @@ export const usePortal = ({
   function getRootElem() {
     if (!rootElemRef.current) {
       rootElemRef.current = document.createElement("div");
+      // rootElemRef.current?.classList.add("z-50");
       clsx?.split(" ").forEach((cls) => {
         rootElemRef.current?.classList.add(cls);
       });
-      rootElemRef.current?.classList.add("z-50");
     }
     return rootElemRef.current;
   }

@@ -12,6 +12,12 @@ function validatePassword(password: unknown) {
   }
 }
 
+function validateTitle(title: unknown) {
+  if (typeof title !== "string" || title.length < 1) {
+    return `Title must be typed`;
+  }
+}
+
 const setContext = (token?: string | null) => ({
   headers: {
     Authorization: token ? `Bearer ${token}` : null,
@@ -44,6 +50,7 @@ const customDate = (date: string) => {
 export {
   validateUsername,
   validatePassword,
+  validateTitle,
   setContext,
   validateSetTitle,
   languages,

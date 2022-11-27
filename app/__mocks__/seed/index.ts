@@ -5,8 +5,8 @@ import type { TSetDB } from "~/types/db";
 
 const seedSet: () => TSetDB[] = () =>
   [...Array(500)].map((_, index) => ({
-    // id: uuid(),
-    id: `set_${index + 1}`,
+    id: uuid(),
+    // id: `set_${index + 1}`,
     title: faker.word.noun(),
     description: faker.lorem.paragraph(),
     userId: "user_0",

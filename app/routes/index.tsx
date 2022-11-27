@@ -1,21 +1,26 @@
-import { ActionFunction, json } from "@remix-run/node";
+import { ActionFunction, json, redirect } from "@remix-run/node";
 
 import { fetchSets } from "~/endpoints/query/sets";
 import { getAuthSession } from "~/utils/auth.server";
 import { SetLayout } from "~/components/sets";
 
 import type { LoaderFunction } from "@remix-run/node";
-import type { SetsLoaderData } from "~/types/data";
+import type { SetActionData, SetsLoaderData } from "~/types/data";
+import { validateTitle } from "~/utils/helpers";
+import { createSet } from "~/endpoints/mutation/set";
 
 export const loader: LoaderFunction = async ({ request }) => {
   try {
     const authSession = await getAuthSession(request);
+    const token = authSession.getToken();
+    if (!token) {
+      throw new Response("Unauthorized", { status: 401 });
+    }
+
     const url = new URL(request.url);
     const skip = url.searchParams.get("skip");
     const take = url.searchParams.get("take");
     const search = url.searchParams.get("search");
-
-    const token = authSession.getToken();
 
     const pageToken = 12;
 
@@ -39,8 +44,60 @@ export const loader: LoaderFunction = async ({ request }) => {
     };
     return json(data);
   } catch (error: any) {
-    console.error(error);
-    return { error: error.message };
+    return json({ error: error.message }, { status: 400 });
+  }
+};
+
+export const badRequest = (data: SetActionData) => json(data, { status: 400 });
+
+export const action: ActionFunction = async ({ request }) => {
+  const authSession = await getAuthSession(request);
+  const token = authSession.getToken();
+  if (!token) {
+    throw new Response("Unauthorized", { status: 401 });
+  }
+
+  const form = await request.formData();
+  const title = form.get("title");
+  const description = form.get("description");
+  const actionType = form.get("actionType");
+
+  if (
+    typeof title !== "string" ||
+    typeof description !== "string" ||
+    typeof actionType !== "string"
+  ) {
+    return badRequest({
+      formError: `Form not submitted correctly.`,
+    });
+  }
+
+  const fields = { title };
+  const fieldErrors = {
+    title: validateTitle(title),
+  };
+
+  if (Object.values(fieldErrors).some(Boolean))
+    return badRequest({ fieldErrors, fields });
+
+  try {
+    switch (actionType) {
+      case "add": {
+        await createSet({ title, description }, token);
+        return redirect("/");
+      }
+      default: {
+        return badRequest({
+          fields,
+          formError: `Action type invalid`,
+        });
+      }
+    }
+  } catch (error: any) {
+    console.log(error);
+    return badRequest({
+      formError: error.message,
+    });
   }
 };
 

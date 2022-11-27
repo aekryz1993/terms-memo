@@ -26,7 +26,6 @@ export type SetActionData = {
   };
   fields?: {
     title: string;
-    description: string;
   };
 };
 

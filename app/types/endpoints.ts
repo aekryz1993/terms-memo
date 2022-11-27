@@ -14,7 +14,7 @@ export interface TUser {
 
 export interface TSetBody {
   title: string;
-  description: string;
+  description?: string | null;
 }
 
 export interface TCardBody {

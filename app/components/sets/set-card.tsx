@@ -10,9 +10,6 @@ export const SetCard = ({ set }: { set: TSet }) => {
   return (
     <Card>
       <Box classes={headerClasses}>
-        {process.env.NODE_ENV === "development" ? (
-          <Title>{set.id}</Title>
-        ) : null}
         <Title>{set.title}</Title>
         <SubTitle>Latest update: {customDate(set.updatedAt)}</SubTitle>
       </Box>

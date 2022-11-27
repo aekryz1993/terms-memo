@@ -39,11 +39,15 @@ export const getSets = (
   sets: TSetDB[],
   { skip, take, search }: { skip: number; take: number; search?: string }
 ) => {
+  const sortedSetsByDate = sets.sort(
+    (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()
+  );
+
   const searchedSets = search
-    ? sets.filter((set) =>
+    ? sortedSetsByDate.filter((set) =>
         set.title.toLowerCase().includes(search.toLowerCase())
       )
-    : sets;
+    : sortedSetsByDate;
 
   const fetchedSets = searchedSets.slice(skip).slice(0, take);
   return {

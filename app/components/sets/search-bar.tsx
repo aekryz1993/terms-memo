@@ -33,7 +33,7 @@ export const SearchBar = () => {
         name="search"
         placeholder="Start type to look up a word... "
         value={searchState}
-        className={searchInput}
+        classes={searchInput}
         onChange={(event) => setSearchState(event.target.value)}
       />
       {cancel ? (
