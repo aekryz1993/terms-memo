@@ -1,20 +1,39 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
-import { closedContainer, container, openedContainer, title } from "./styled";
-import { Box } from "../utilities/layout";
+import {
+  closedContainer,
+  container,
+  openedContainer,
+  titleClsx,
+} from "./styled";
 import { ControllerIcon } from "./ControllerIcon";
-import { AddForm } from "./add-form";
 import { Title } from "../utilities/Typography";
+import { useListenForOutsideClicks } from "~/hooks/useListenForOutsideClicks";
+import { SetActionFrom } from "../sets/set-action-form";
 
 export const AddSet = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpened, setIsOpened] = useState(false);
+  const containerRef = useRef(null);
+
+  const handleClose = useCallback(() => {
+    setIsOpened(false);
+  }, [setIsOpened]);
+
+  useListenForOutsideClicks({ handleClose, isOpened, containerRef });
 
   return (
-    <Box classes={clsx(container, isOpen ? openedContainer : closedContainer)}>
-      <Title classes={title}>Add a New Set</Title>
-      <AddForm setIsOpen={setIsOpen} />
-      <ControllerIcon isOpen={isOpen} setIsOpen={setIsOpen} />
-    </Box>
+    <div
+      className={clsx(container, isOpened ? openedContainer : closedContainer)}
+      ref={containerRef}
+    >
+      <Title classes={titleClsx}>Add a New Set</Title>
+      <SetActionFrom
+        actionType="add"
+        handleClose={handleClose}
+        buttonLabel="Add"
+      />
+      <ControllerIcon isOpened={isOpened} setIsOpened={setIsOpened} />
+    </div>
   );
 };

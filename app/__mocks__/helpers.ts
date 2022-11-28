@@ -8,7 +8,7 @@ import { secretJWT } from "./mocks/auth";
 const apiGraph =
   process.env.NODE_ENV === "test"
     ? graphql
-    : graphql.link("http://localhost:4000/graphql");
+    : graphql.link("http://server.com/graphql");
 
 const getToken = (req: GraphQLRequest<GraphQLVariables>) => {
   const headers = new Headers(req.headers);

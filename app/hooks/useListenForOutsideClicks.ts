@@ -1,24 +1,24 @@
 import { useCallback, useEffect } from "react";
 
 export const useListenForOutsideClicks = ({
-  setIsOpened,
+  handleClose,
   isOpened,
-  dropdownRef,
+  containerRef,
 }: {
-  setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  handleClose: () => void;
   isOpened: boolean;
-  dropdownRef: React.MutableRefObject<HTMLDivElement | null>;
+  containerRef: React.MutableRefObject<HTMLDivElement | null>;
 }) => {
   const handleCloseEvent = useCallback(
     (event: any) => {
-      const dropdown = dropdownRef.current;
+      const dropdown = containerRef.current;
       const target = event.target;
 
       if (dropdown?.contains(target)) return;
 
-      setIsOpened(false);
+      handleClose();
     },
-    [dropdownRef, setIsOpened]
+    [containerRef, handleClose]
   );
 
   useEffect(() => {

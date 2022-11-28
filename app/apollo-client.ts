@@ -5,7 +5,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
   credentials: "include",
   link: new HttpLink({
-    uri: "http://localhost:4000/graphql",
+    uri: "http://server.com/graphql",
 
     // Use explicit `window.fetch` so tha outgoing requests
     // are captured and deferred until the Service Worker is ready.

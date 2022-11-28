@@ -1,20 +1,35 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Form, useActionData, useTransition } from "@remix-run/react";
 
 import { PrimaryButton } from "../utilities/buttons";
-import { Field } from "../utilities/inputs";
+import { Field, TextareaField } from "../utilities/inputs";
 import { formClasses, inputClasses, submitBtn } from "./styled";
 
 import type { SetActionData } from "~/types/data";
 
-export const AddForm = ({
-  setIsOpen,
+export const SetActionFrom = ({
+  handleClose,
+  actionType,
+  id,
+  title,
+  description,
+  buttonLabel,
 }: {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleClose: () => void;
+  actionType: string;
+  id?: string;
+  title?: string;
+  description?: string | null;
+  buttonLabel: string;
 }) => {
   const transition = useTransition();
   const actionData = useActionData<SetActionData>();
-  const [fields, setFields] = useState({ title: "", description: "" });
+  const [fields, setFields] = useState({
+    title: title ?? "",
+    description: description ?? "",
+  });
+
+  const isSubmitRef = useRef(false);
 
   const fieldProps = useCallback(
     ({
@@ -37,7 +52,9 @@ export const AddForm = ({
       "aria-invalid": Boolean(value),
       "aria-errormessage": error ? "title-error" : undefined,
       fieldError: error,
-      onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange: (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      ) => {
         setFields((prevState) => ({
           ...prevState,
           [event.target.name]: event.target.value,
@@ -48,19 +65,24 @@ export const AddForm = ({
   );
 
   useEffect(() => {
-    if (transition.state === "idle") {
+    if (transition.state === "idle" && isSubmitRef.current) {
       setFields({ title: "", description: "" });
+      isSubmitRef.current = false;
     } else if (
       transition.state === "submitting" &&
       transition.submission.formData.get("title")
     ) {
-      setIsOpen(false);
+      isSubmitRef.current = true;
+      handleClose();
     }
-  }, [transition.state, setIsOpen]);
+  }, [transition.state, handleClose]);
 
   return (
     <Form method="post" className={formClasses}>
-      <input type="hidden" name="actionType" value="add" />
+      <input type="hidden" name="actionType" value={actionType} />
+      {actionType === "edit" ? (
+        <input type="hidden" name="id" value={id} />
+      ) : null}
       <Field
         {...fieldProps({
           name: "title",
@@ -70,15 +92,17 @@ export const AddForm = ({
         })}
         placeholder="Type a set title..."
       />
-      <Field
+      <TextareaField
         {...fieldProps({
           name: "description",
           value: fields.description,
         })}
         placeholder="Type a description of the set..."
+        rows={5}
+        maxLength={130}
       />
       <PrimaryButton type="submit" classes={submitBtn}>
-        Add Set
+        {buttonLabel}
       </PrimaryButton>
     </Form>
   );

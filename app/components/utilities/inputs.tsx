@@ -30,9 +30,9 @@ interface TTextareaProps extends React.ComponentPropsWithoutRef<"textarea"> {
   classes?: string;
 }
 
-interface TLabelProps extends React.ComponentPropsWithoutRef<"label"> {
-  children: React.ReactNode;
-  classes?: string;
+interface TTextAreaFieldProps extends TTextareaProps {
+  id: string;
+  fieldError?: string;
 }
 
 const primaryinputLightClasses = "bg-bg-input_lt";
@@ -40,15 +40,6 @@ const primaryinputLightClasses = "bg-bg-input_lt";
 const primaryInputDarkClasses = "dark:bg-bg-input_dark";
 
 const labelClasses = "block text-xl pb-2";
-
-const LabelInput = (props: TLabelProps) => {
-  const { classes, className, children, ...labelProps } = props;
-  return (
-    <label className={clsx(classes, className)} {...labelProps}>
-      {children}
-    </label>
-  );
-};
 
 const Input = (props: TInputProps) => {
   const { classes, className, ...inputProps } = props;
@@ -127,4 +118,25 @@ const Field = (props: TFieldProps) => {
   );
 };
 
-export { LabelInput, Label, Field, Input, Textarea, FormInputItem };
+const TextareaField = (props: TTextAreaFieldProps) => {
+  const { fieldError, ...fieldProps } = props;
+  return (
+    <Box>
+      <Label htmlFor={fieldProps.id}>
+        {fieldProps.name
+          ? `${fieldProps.name.charAt(0).toUpperCase()}${fieldProps.name.slice(
+              1
+            )}`
+          : null}
+      </Label>
+      <Textarea {...fieldProps} />
+      {fieldError ? (
+        <ErrorMessageField role="alert" id="title-error">
+          {fieldError}
+        </ErrorMessageField>
+      ) : null}
+    </Box>
+  );
+};
+
+export { TextareaField, Label, Field, Input, Textarea, FormInputItem };

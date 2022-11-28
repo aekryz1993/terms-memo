@@ -60,6 +60,15 @@ const searchBarIcon =
 const searchCancelIcon =
   "cursor-pointer text-text-inactive_lt dark:text-text-inactive_dark";
 
+const optionsContainer =
+  "absolute top-2 right-2 hover:bg-bg-sec_hvr_lt dark:hover:bg-bg-sec_hvr_dark rounded-full p-1";
+
+const formClasses =
+  "h-full w-5/6 max-w-[400px] m-auto flex flex-col items-stretch gap-6 md:gap-12";
+const inputClasses =
+  "rounded py-4 px-4 bg-bg-input_lt dark:bg-bg-input_dark drop-shadow w-full";
+const submitBtn = "mt-2";
+
 export {
   layoutContainer,
   GridContainer,
@@ -77,4 +86,8 @@ export {
   searchBarIcon,
   searchInput,
   searchCancelIcon,
+  optionsContainer,
+  formClasses,
+  inputClasses,
+  submitBtn,
 };

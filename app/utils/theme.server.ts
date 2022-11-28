@@ -11,11 +11,9 @@ if (!sessionSecret) {
 const themeStorage = createCookieSessionStorage({
   cookie: {
     name: "theme",
-    secure: true,
     secrets: [sessionSecret],
     sameSite: "lax",
     path: "/",
-    // httpOnly: true,
   },
 });
 

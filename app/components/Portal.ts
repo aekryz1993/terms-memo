@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { usePortal } from "~/hooks/usePortal";
 
@@ -9,10 +10,10 @@ export const Portal = ({
   handleClose,
 }: {
   id: string;
+  children: React.ReactNode;
   rootClass?: string;
   clsx?: string;
   handleClose?: () => void;
-  children: React.ReactNode;
 }) => {
   if (!canUseDOM()) {
     return null;

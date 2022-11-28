@@ -14,9 +14,9 @@ const Dropdown = ({
   isOpened: boolean;
 }) => {
   const { i18n } = useTranslation();
-  const dropdownRef = useRef(null);
+  const containerRef = useRef(null);
 
-  useListenForOutsideClicks({ setIsOpened, isOpened, dropdownRef });
+  useListenForOutsideClicks({ setIsOpened, isOpened, containerRef });
 
   return (
     <>
@@ -28,7 +28,7 @@ const Dropdown = ({
               ? "translate-x-2/4"
               : "-translate-x-2/4"
           )}
-          ref={dropdownRef}
+          ref={containerRef}
         >
           {children}
         </div>

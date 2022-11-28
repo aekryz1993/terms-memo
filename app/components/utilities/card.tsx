@@ -5,7 +5,7 @@ interface TCardProps extends React.ComponentProps<"li"> {
 }
 
 const cardClsx =
-  "px-4 py-4 flex flex-col bg-bg-sec_lt dark:bg-bg-sec_dark shadow cursor-pointer rounded";
+  "relative px-4 py-4 flex flex-col bg-bg-sec_lt dark:bg-bg-sec_dark shadow cursor-pointer rounded";
 
 const Card = (props: TCardProps) => {
   const { children, className, ...divProps } = props;

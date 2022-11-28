@@ -7,7 +7,7 @@ import { SetLayout } from "~/components/sets";
 import type { LoaderFunction } from "@remix-run/node";
 import type { SetActionData, SetsLoaderData } from "~/types/data";
 import { validateTitle } from "~/utils/helpers";
-import { createSet } from "~/endpoints/mutation/set";
+import { createSet, editSet } from "~/endpoints/mutation/set";
 
 export const loader: LoaderFunction = async ({ request }) => {
   try {
@@ -58,6 +58,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const form = await request.formData();
+  const id = form.get("id");
   const title = form.get("title");
   const description = form.get("description");
   const actionType = form.get("actionType");
@@ -84,7 +85,16 @@ export const action: ActionFunction = async ({ request }) => {
     switch (actionType) {
       case "add": {
         await createSet({ title, description }, token);
-        return redirect("/");
+        return redirect(".");
+      }
+      case "edit": {
+        if (typeof id !== "string") {
+          return badRequest({
+            formError: `Form not submitted correctly.`,
+          });
+        }
+        await editSet({ id, title, description }, token);
+        return redirect(".");
       }
       default: {
         return badRequest({
@@ -94,7 +104,6 @@ export const action: ActionFunction = async ({ request }) => {
       }
     }
   } catch (error: any) {
-    console.log(error);
     return badRequest({
       formError: error.message,
     });

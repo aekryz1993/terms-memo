@@ -11,13 +11,7 @@ const openOrCloseIcon =
 const openIcon = "bg-text-inactive_lt dark:bg-bg-input_dark rotate-315";
 const closeIcon = "bg-bg-sel_lt dark:bg-bg-sel_dark rotate-0";
 
-const title = "text-3xl mx-auto font-black";
-
-const formClasses =
-  "h-full w-5/6 max-w-[400px] m-auto flex flex-col items-stretch gap-12";
-const inputClasses =
-  "rounded py-4 px-4 bg-bg-input_lt dark:bg-bg-input_dark drop-shadow w-full";
-const submitBtn = "mt-6";
+const titleClsx = "text-3xl mx-auto font-black";
 
 export {
   container,
@@ -27,8 +21,5 @@ export {
   openOrCloseIcon,
   openIcon,
   closeIcon,
-  inputClasses,
-  formClasses,
-  title,
-  submitBtn,
+  titleClsx,
 };

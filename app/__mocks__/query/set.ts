@@ -12,7 +12,7 @@ const fetchSetsMock = (sets: TSetDB[]) =>
 
     if (!user) return res(ctx.errors([forbiddenError]));
 
-    const fetchSets = getSets(sets, { skip, take, search });
+    const fetchSets = getSets(sets, { skip, take, search, userId: user.id });
 
     return res(
       ctx.data({

@@ -11,7 +11,7 @@ const appearanceBtnClsx =
   "rounded-full bg-bg-pry_lt dark:bg-bg-pry_dark p-2 cursor-pointer";
 
 const dropdownContainer =
-  "absolute bg-bg-sec_lt dark:bg-bg-sec_dark shadow-xl rounded translate-y-4";
+  "absolute bg-bg-sec_lt dark:bg-bg-sec_dark drop-shadow-xl rounded translate-y-4";
 
 const dropDownSlot =
   "hover:bg-bg-pry_hvr_lt dark:hover:bg-bg-pry_hvr_dark cursor-pointer px-6 py-2";

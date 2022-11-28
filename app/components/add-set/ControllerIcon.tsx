@@ -5,16 +5,16 @@ import { openOrCloseIcon, closeIcon, openIcon, openOrCloseBox } from "./styled";
 import { Box } from "../utilities/layout";
 
 export const ControllerIcon = ({
-  isOpen,
-  setIsOpen,
+  isOpened,
+  setIsOpened,
 }: {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpened: boolean;
+  setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }) => (
   <Box classes={openOrCloseBox}>
     <PlusIcon
-      className={clsx(openOrCloseIcon, isOpen ? openIcon : closeIcon)}
-      onClick={() => setIsOpen((prev) => !prev)}
+      className={clsx(openOrCloseIcon, isOpened ? openIcon : closeIcon)}
+      onClick={() => setIsOpened((prev) => !prev)}
     />
   </Box>
 );

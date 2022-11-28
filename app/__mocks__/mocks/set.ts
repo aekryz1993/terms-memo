@@ -21,10 +21,15 @@ export const newSet: Readonly<TSetBody> = {
   description: newSetBody.description,
 };
 
-export const createSetDataResponse = (newSet: TSetBody) => ({
-  set: newSet,
+export const createSetDataResponse = (set: TSetBody, message: string) => ({
+  set,
   statusCode: 200,
-  message: "A new set is successfully created",
+  message,
+});
+
+export const delteDataResponse = (message: string) => ({
+  statusCode: 200,
+  message,
 });
 
 export const checkExistSet = (title: string, sets: TSetDB[]) =>
@@ -35,11 +40,31 @@ export const existSetError = {
   errorType: "UserInputError",
 };
 
+export const notExistSetError = {
+  message: "This set is not exist",
+  errorType: "UserInputError",
+};
+
 export const getSets = (
   sets: TSetDB[],
-  { skip, take, search }: { skip: number; take: number; search?: string }
+  {
+    skip,
+    userId,
+    take,
+    search,
+  }: { skip: number; userId: string; take: number; search?: string }
 ) => {
-  const sortedSetsByDate = sets.sort(
+  const setsByUser = sets.filter((set) => set.userId === userId);
+
+  if (setsByUser.length === 0)
+    return {
+      sets: setsByUser,
+      tatolSets: 0,
+      totalPages: 0,
+      currentPage: 1,
+    };
+
+  const sortedSetsByDate = setsByUser.sort(
     (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()
   );
 
@@ -56,6 +81,30 @@ export const getSets = (
     totalPages: Math.ceil(searchedSets.length / take),
     currentPage: skip / take + 1,
   };
+};
+
+export const updateSet = (
+  sets: TSetDB[],
+  { title, description, id }: Pick<TSetDB, "title" | "description" | "id">
+) => {
+  const updatedSetIndex = sets.findIndex((set) => set.id === id);
+  if (updatedSetIndex < 0) return false;
+
+  const updatedSet = {
+    ...sets[updatedSetIndex],
+    title,
+    description,
+    updatedAt: new Date(Date.now()),
+  };
+
+  return { updatedSet, updatedSetIndex };
+};
+
+export const deleteSet = (sets: TSetDB[], { id }: Pick<TSetDB, "id">) => {
+  const deleteSetIndex = sets.findIndex((set) => set.id === id);
+  if (deleteSetIndex < 0) return false;
+
+  return deleteSetIndex;
 };
 
 export const buildSet = ({
