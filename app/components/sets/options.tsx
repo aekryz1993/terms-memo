@@ -1,11 +1,14 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { useFetcher } from "@remix-run/react";
 
 import { Dropdown } from "../utilities/dropdown";
 import { Box, Container } from "../utilities/layout";
 import { dropDownSlot } from "../header/styled";
 import { optionsContainer } from "./styled";
 import { EditSet } from "../edit-set";
+import { DeleteSet } from "../delete-set";
+import { useDeleteSet } from "~/hooks/set/useDeleteSet";
 
 export type TActionType = "edit" | "delete";
 
@@ -18,16 +21,20 @@ export const Options = ({
   id,
   title,
   description,
+  setIsBinned,
 }: {
   id: string;
   title: string;
   description?: string | null;
+  setIsBinned: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [isOpened, setIsOpened] = useState(false);
   const [isOpenedModal, setIsOpenedModal] = useState({
     edit: false,
     delete: false,
   });
+
+  const { deleteTimerIdRef, setDeleteTimer } = useDeleteSet({ id });
 
   const toggleIsOpened = (
     event: React.MouseEvent<SVGSVGElement, MouseEvent>
@@ -44,9 +51,15 @@ export const Options = ({
           ...prevState,
           [actionType]: !prevState[actionType],
         }));
+
         setIsOpened(false);
+
+        if (actionType === "delete") {
+          setIsBinned(true);
+          setDeleteTimer();
+        }
       },
-    []
+    [setIsBinned, setIsOpened, setIsOpenedModal, setDeleteTimer]
   );
 
   return (
@@ -71,7 +84,13 @@ export const Options = ({
           setIsOpenedModal={setIsOpenedModal}
         />
       ) : null}
-      {/* {isOpenedModal.delete ? <DeleteSet /> : null} */}
+      {isOpenedModal.delete ? (
+        <DeleteSet
+          deleteTimerIdRef={deleteTimerIdRef}
+          setIsOpenedModal={setIsOpenedModal}
+          setIsBinned={setIsBinned}
+        />
+      ) : null}
     </Container>
   );
 };

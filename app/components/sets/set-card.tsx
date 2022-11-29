@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { customDate } from "~/utils/helpers";
 import { Card } from "../utilities/card";
 import { Paragraph, SubTitle, Title } from "../utilities/Typography";
@@ -8,14 +10,21 @@ import { Options } from "./options";
 import type { TSet } from "~/types/endpoints";
 
 export const SetCard = ({ set }: { set: TSet }) => {
+  const [isBinned, setIsBinned] = useState(false);
+
   return (
     <Card
+      isBinned={isBinned}
       onClick={(event) => {
-        // event.stopPropagation();
         console.log(set.title);
       }}
     >
-      <Options id={set.id} title={set.title} description={set.description} />
+      <Options
+        id={set.id}
+        title={set.title}
+        description={set.description}
+        setIsBinned={setIsBinned}
+      />
       <Box classes={headerClasses}>
         <Title>{set.title}</Title>
         <SubTitle>Latest update: {customDate(set.updatedAt)}</SubTitle>

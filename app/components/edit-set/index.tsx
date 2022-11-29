@@ -17,13 +17,11 @@ export const EditSet = ({
   id,
   title,
   description,
-  isOpened,
   setIsOpenedModal,
 }: {
   id: string;
   title: string;
   description?: string | null;
-  isOpened: boolean;
   setIsOpenedModal: React.Dispatch<
     React.SetStateAction<{ edit: boolean; delete: boolean }>
   >;

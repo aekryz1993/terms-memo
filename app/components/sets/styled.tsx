@@ -7,10 +7,9 @@ interface TGridContainerProps extends React.ComponentProps<"ul"> {
 const layoutContainer = "flex flex-col gap-12 px-8 pt-8";
 
 const gridContainerclsx =
-  "grid gap-4 grid-cols-1 text-direction-ltr pb-20 select-none";
-const smGgridContainerclsx = "sm:grid-cols-2";
-const lgGridContainerclsx = "lg:gap-8 lg:grid-cols-3";
-const xlGridContainerclsx = "xl:gap-10 xl:grid-cols-4";
+  "flex flex-wrap gap-6 justify-center text-direction-ltr pb-20 select-none";
+const lgGridContainerclsx = "lg:gap-8";
+const xlGridContainerclsx = "xl:gap-10";
 
 const GridContainer = (props: TGridContainerProps) => {
   const { children, className, ...ulProps } = props;
@@ -21,7 +20,6 @@ const GridContainer = (props: TGridContainerProps) => {
       className={clsx(
         className,
         gridContainerclsx,
-        smGgridContainerclsx,
         lgGridContainerclsx,
         xlGridContainerclsx
       )}

@@ -100,7 +100,7 @@ const deleteSetMock = (sets: TSetDB[]) =>
 
     return res(
       ctx.data({
-        updateSet: delteDataResponse("The set is successfully deleted"),
+        deleteSet: delteDataResponse("The set is successfully deleted"),
       })
     );
   });

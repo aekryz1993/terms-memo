@@ -55,4 +55,10 @@ body {
   .text-direction-rtl {
     direction: rtl;
   }
+
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
 }
