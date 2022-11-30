@@ -33,4 +33,8 @@ const HStack = ({
   classes?: string;
 }) => <Box classes={clsx([classes, "flex flex-col"])}>{children}</Box>;
 
-export { Container, Box, VStack, HStack };
+const centerElement = "flex justify-center items-center";
+const centerVertically = `${clsx(centerElement, "flex-row")}`;
+const centerHorizontally = `${clsx(centerElement, "flex-col")}`;
+
+export { Container, Box, VStack, HStack, centerVertically, centerHorizontally };

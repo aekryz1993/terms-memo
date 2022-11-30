@@ -1,10 +1,10 @@
 export enum Typename {
   User = "User",
   Set = "Set",
-  Card = "Card",
+  Level = "Level",
 }
 
-export enum CardName {
+export enum Level {
   Perfect = "Perfect",
   Medium = "Medium",
   Difficult = "Difficult",

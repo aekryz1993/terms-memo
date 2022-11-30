@@ -9,7 +9,7 @@ import { AddSet } from "../add-set";
 
 import type { SetsLoaderData } from "~/types/data";
 
-export const SetLayout = () => {
+export const SetsLayout = () => {
   const { sets } = useLoaderData<SetsLoaderData>();
 
   return (

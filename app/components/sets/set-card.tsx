@@ -13,12 +13,7 @@ export const SetCard = ({ set }: { set: TSet }) => {
   const [isBinned, setIsBinned] = useState(false);
 
   return (
-    <Card
-      isBinned={isBinned}
-      onClick={(event) => {
-        console.log(set.title);
-      }}
-    >
+    <Card id={set.id} isbinned={isBinned ? isBinned.toString() : undefined}>
       <Options
         id={set.id}
         title={set.title}

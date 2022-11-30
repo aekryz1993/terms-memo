@@ -116,7 +116,7 @@ const PageItem = ({
           ? `?search=${search}&skip=${skip}&take=${take}`
           : `?skip=${skip}&take=${take}`
       }
-      prefetch="render"
+      prefetch="intent"
       replace
       className={itemClasses(currentPage, pageNumber)}
     >
@@ -262,7 +262,7 @@ const DirectionItem = ({
               ? `?search=${search}&skip=${take * skip}&take=${take}`
               : `?skip=${take * skip}&take=${take}`
           }
-          prefetch="render"
+          prefetch="intent"
           replace
           className={clsx(itemClasses(), preventCondition ? disableIcon : null)}
         >

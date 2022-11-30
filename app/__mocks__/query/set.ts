@@ -3,6 +3,7 @@ import { forbiddenError } from "../mocks/auth";
 import { getSets } from "../mocks/set";
 
 import type { TSetDB } from "~/types/db";
+import { findById } from "../mocks/queries";
 
 const fetchSetsMock = (sets: TSetDB[]) =>
   apiGraph.query("Sets", async (req, res, ctx) => {
@@ -21,4 +22,26 @@ const fetchSetsMock = (sets: TSetDB[]) =>
     );
   });
 
-export const set = (sets: TSetDB[]) => [fetchSetsMock(sets)];
+const fetchSetMock = (sets: TSetDB[]) =>
+  apiGraph.query("Set", async (req, res, ctx) => {
+    const { id } = req.variables;
+
+    const { user } = await validAuth(req);
+
+    if (!user) return res(ctx.errors([forbiddenError]));
+
+    const set = findById(sets, { id });
+
+    return res(
+      ctx.data({
+        fetchSet: {
+          set,
+        },
+      })
+    );
+  });
+
+export const set = (sets: TSetDB[]) => [
+  fetchSetsMock(sets),
+  fetchSetMock(sets),
+];

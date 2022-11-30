@@ -1,6 +1,8 @@
-import { CardName } from "~/types/enums";
+import { v4 as uuid } from "uuid";
+
+import { Level } from "~/types/enums";
 import { forbiddenError } from "../mocks/auth";
-import { cards } from "../mocks/card";
+import { levels } from "../mocks/level";
 import {
   checkExistSet,
   createSetDataResponse,
@@ -27,7 +29,7 @@ const createSetMock = (sets: TSetDB[]) =>
     if (existSet) return res(ctx.errors([existSetError]));
 
     const newSet = {
-      id: title,
+      id: uuid(),
       title,
       description,
       userId: user.id,
@@ -37,15 +39,13 @@ const createSetMock = (sets: TSetDB[]) =>
     sets.push(newSet);
 
     if (process.env.NODE_ENV !== "test") {
-      [CardName.Perfect, CardName.Medium, CardName.Difficult].forEach(
-        (cardName) => {
-          cards.push({
-            id: `${cardName}-${title}`,
-            name: cardName,
-            setId: title,
-          });
-        }
-      );
+      [Level.Perfect, Level.Medium, Level.Difficult].forEach((cardName) => {
+        levels.push({
+          id: uuid(),
+          name: cardName,
+          setId: title,
+        });
+      });
     }
 
     return res(

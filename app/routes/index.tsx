@@ -2,7 +2,7 @@ import { ActionFunction, json, redirect } from "@remix-run/node";
 
 import { fetchSets } from "~/endpoints/query/sets";
 import { getAuthSession } from "~/utils/auth.server";
-import { SetLayout } from "~/components/sets";
+import { SetsLayout } from "~/components/sets";
 
 import type { LoaderFunction } from "@remix-run/node";
 import type { SetActionData, SetsLoaderData } from "~/types/data";
@@ -111,5 +111,5 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  return <SetLayout />;
+  return <SetsLayout />;
 }

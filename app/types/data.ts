@@ -1,5 +1,5 @@
 import type { Theme } from "~/context/theme";
-import type { TSet, TUser } from "./endpoints";
+import type { TLevel, TSet, TUser } from "./endpoints";
 
 export interface TAuthInfo {
   user: TUser | null;
@@ -42,6 +42,11 @@ export interface SetsLoaderData {
   token: string;
   take: number;
   skip: number;
+}
+
+export interface SetLoaderData {
+  set: TSet;
+  levels: TLevel[];
 }
 
 export interface RootLoaderData {

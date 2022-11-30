@@ -4,7 +4,7 @@ import { setContext } from "~/utils/helpers";
 
 import type { TPaginationParams } from "~/types/endpoints";
 
-export const SETS = gql`
+const SETS = gql`
   query Sets($skip: Int!, $take: Int!, $search: String) {
     fetchSets(skip: $skip, take: $take, search: $search) {
       sets {
@@ -21,7 +21,21 @@ export const SETS = gql`
   }
 `;
 
-export async function fetchSets(
+const SET = gql`
+  query Set($id: String!) {
+    fetchSet(id: $id) {
+      set {
+        id
+        title
+        description
+        userId
+        updatedAt
+      }
+    }
+  }
+`;
+
+async function fetchSets(
   { skip, take, search }: TPaginationParams,
   token: string
 ) {
@@ -33,3 +47,15 @@ export async function fetchSets(
 
   return response;
 }
+
+async function fetchSet({ id }: { id: string }, token: string) {
+  const response = await client.query({
+    query: SET,
+    variables: { id },
+    context: setContext(token),
+  });
+
+  return response;
+}
+
+export { SETS, SET, fetchSets, fetchSet };

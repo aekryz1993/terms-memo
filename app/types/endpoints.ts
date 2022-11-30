@@ -1,4 +1,4 @@
-import type { CardName, Typename } from "./enums";
+import type { Level, Typename } from "./enums";
 
 export interface TUserBody {
   username: string;
@@ -17,8 +17,8 @@ export interface TSetBody {
   description?: string | null;
 }
 
-export interface TCardBody {
-  name: CardName;
+export interface TLevelBody {
+  name: Level;
   setId: string;
 }
 
@@ -29,9 +29,9 @@ export interface TSet extends TSetBody {
   // __typename: Typename.Set;
 }
 
-export interface TCard extends TCardBody {
+export interface TLevel extends TLevelBody {
   id: string;
-  __typename: Typename.Card;
+  __typename: Typename.Level;
 }
 
 export interface TPaginationParams {

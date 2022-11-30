@@ -1,3 +1,5 @@
+import { findMany } from "./queries";
+
 import type { TSetDB } from "~/types/db";
 import type { TSetBody } from "~/types/endpoints";
 
@@ -54,7 +56,7 @@ export const getSets = (
     search,
   }: { skip: number; userId: string; take: number; search?: string }
 ) => {
-  const setsByUser = sets.filter((set) => set.userId === userId);
+  const setsByUser = findMany(sets, { label: "userId", value: userId });
 
   if (setsByUser.length === 0)
     return {

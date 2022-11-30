@@ -1,5 +1,5 @@
 import type { TSetBody, TUserBody } from "./endpoints";
-import type { CardName } from "./enums";
+import type { Level } from "./enums";
 
 export interface TUserDB extends TUserBody {
   id: string;
@@ -11,8 +11,16 @@ export interface TSetDB extends TSetBody {
   updatedAt: Date;
 }
 
-export interface TCardDB {
+export interface TLevelDB {
   id: string;
-  name: CardName;
+  name: Level;
   setId: string;
+}
+
+export interface TTermDB {
+  id: string;
+  name: string;
+  definition: string;
+  levelId: string;
+  updatedAt: Date;
 }

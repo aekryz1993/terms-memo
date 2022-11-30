@@ -7,10 +7,27 @@ module.exports = {
       rotate: {
         315: "315deg",
       },
+      borderWidth: {
+        "1/10": "0.1px",
+        "2/10": "0.2px",
+        "3/10": "0.3px",
+      },
     },
     colors: {
       white: "#FFFFFF",
       transparent: "transparent",
+      alert: {
+        danger_lt: "#ff4444",
+        warning_lt: "#ffbb33",
+        success_lt: "#00C851",
+        info_lt: "#33b5e5",
+        // dark mode colors
+        danger_dark: "#CC0000",
+        warning_dark: "#FF8800",
+        success_dark: "#007E33",
+        info_dark: "#0099CC",
+      },
+
       bg: {
         sel_lt: "#1A74E4",
         pry_lt: "#F1F2F5",

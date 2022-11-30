@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useListenForOutsideClicks } from "~/hooks/useListenForOutsideClicks";
 import { dropdownContainer } from "../header/styled";
@@ -16,7 +16,11 @@ const Dropdown = ({
   const { i18n } = useTranslation();
   const containerRef = useRef(null);
 
-  useListenForOutsideClicks({ setIsOpened, isOpened, containerRef });
+  const handleClose = useCallback(() => {
+    setIsOpened(false);
+  }, [setIsOpened]);
+
+  useListenForOutsideClicks({ handleClose, isOpened, containerRef });
 
   return (
     <>
