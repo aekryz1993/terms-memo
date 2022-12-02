@@ -1,5 +1,4 @@
-import clsx from "clsx";
-import React from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 function createRootElement(id: string, rootClass?: string) {
   const rootContainer = document.createElement("div");
@@ -29,9 +28,13 @@ export const usePortal = ({
   clsx?: string;
   handleClose?: () => void;
 }) => {
-  const rootElemRef = React.useRef<HTMLDivElement | null>(null);
+  const rootElemRef = useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(() => {
+  const stopPropagationChild = useCallback((event: MouseEvent) => {
+    event.stopPropagation();
+  }, []);
+
+  useEffect(() => {
     const existingParent = document.querySelector(`#${id}`);
     let parentElem: Element | null =
       existingParent || createRootElement(id, rootClass);
@@ -42,13 +45,22 @@ export const usePortal = ({
 
     parentElem.appendChild(rootElemRef.current as Element);
 
-    if (handleClose) parentElem.addEventListener("click", handleClose);
+    if (handleClose) {
+      parentElem.addEventListener("click", handleClose);
+      rootElemRef.current?.addEventListener("click", stopPropagationChild);
+    }
 
     return function removeElement() {
       rootElemRef.current?.remove();
       if (!parentElem?.childElementCount) {
         parentElem?.remove();
-        if (handleClose) parentElem?.removeEventListener("click", handleClose);
+        if (handleClose) {
+          parentElem?.removeEventListener("click", handleClose);
+          rootElemRef.current?.removeEventListener(
+            "click",
+            stopPropagationChild
+          );
+        }
       }
     };
   }, [id, handleClose]);

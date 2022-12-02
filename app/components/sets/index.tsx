@@ -1,11 +1,11 @@
 import { useLoaderData } from "@remix-run/react";
 
 import { layoutContainer } from "./styled";
-import { Pagination } from "./pagination";
-import { SearchBar } from "./search-bar";
+import { Pagination } from "../utilities/pagination";
 import { Container } from "../utilities/layout";
 import { Sets } from "./sets";
 import { AddSet } from "../add-set";
+import { SearchBar } from "../utilities/search-bar";
 
 import type { SetsLoaderData } from "~/types/data";
 

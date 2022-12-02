@@ -2,6 +2,7 @@ export enum Typename {
   User = "User",
   Set = "Set",
   Level = "Level",
+  Term = "Term",
 }
 
 export enum Level {

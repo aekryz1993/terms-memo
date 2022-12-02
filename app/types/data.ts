@@ -1,5 +1,5 @@
 import type { Theme } from "~/context/theme";
-import type { TLevel, TSet, TUser } from "./endpoints";
+import type { TLevel, TSet, TTerm, TUser } from "./endpoints";
 
 export interface TAuthInfo {
   user: TUser | null;
@@ -29,19 +29,34 @@ export type SetActionData = {
   };
 };
 
+export type TermActionData = {
+  formError?: string;
+  fieldErrors?: {
+    name: string | undefined;
+  };
+  fields?: {
+    name: string;
+  };
+};
+
 export interface AuthLoaderData {
   authInfo: TAuthInfo | null;
 }
 
-// export interface SetsLoaderData extends AuthLoaderData {
-export interface SetsLoaderData {
-  sets: TSet[];
-  tatolSets: number;
+export interface PaginationLoaderData {
+  tatolItems: number;
   totalPages: number;
   currentPage: number;
-  token: string;
   take: number;
   skip: number;
+}
+export interface SetsLoaderData extends PaginationLoaderData {
+  sets: TSet[];
+  token: string;
+}
+export interface TermsLoaderData extends PaginationLoaderData {
+  terms: TTerm[];
+  token: string;
 }
 
 export interface SetLoaderData {

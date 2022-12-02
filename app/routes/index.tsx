@@ -34,8 +34,8 @@ export const loader: LoaderFunction = async ({ request }) => {
     );
 
     const data: SetsLoaderData = {
-      sets: fetchSetsResponse.data.fetchSets.sets,
-      tatolSets: fetchSetsResponse.data.fetchSets.tatolSets,
+      sets: fetchSetsResponse.data.fetchSets.items,
+      tatolItems: fetchSetsResponse.data.fetchSets.tatolItems,
       totalPages: fetchSetsResponse.data.fetchSets.totalPages,
       currentPage: fetchSetsResponse.data.fetchSets.currentPage,
       token,

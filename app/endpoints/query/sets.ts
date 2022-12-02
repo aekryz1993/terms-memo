@@ -7,14 +7,14 @@ import type { TPaginationParams } from "~/types/endpoints";
 const SETS = gql`
   query Sets($skip: Int!, $take: Int!, $search: String) {
     fetchSets(skip: $skip, take: $take, search: $search) {
-      sets {
+      items {
         id
         title
         description
         userId
         updatedAt
       }
-      tatolSets
+      tatolItems
       totalPages
       currentPage
     }

@@ -1,5 +1,5 @@
-import { memo, useCallback, useState } from "react";
-import { useLoaderData } from "@remix-run/react";
+import { memo, useState } from "react";
+import { Link, useLoaderData } from "@remix-run/react";
 import clsx from "clsx";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
@@ -33,7 +33,7 @@ const LevelsNavItems = memo(({ currentLevel }: { currentLevel: string }) => {
           currentLevel === "All" ? activeLevelClsx : inactiveLevelClsx
         )}
       >
-        All
+        <Link to="levels">All</Link>
       </Box>
       {levels?.length
         ? levels.map((level) => (
@@ -47,7 +47,7 @@ const LevelsNavItems = memo(({ currentLevel }: { currentLevel: string }) => {
                   : inactiveLevelClsx
               )}
             >
-              {level.name}
+              <Link to={`levels/${level.id}`}>{level.name}</Link>
             </Box>
           ))
         : null}

@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useCallback, useRef, useState } from "react";
 import clsx from "clsx";
 import AccountIcon from "remixicon-react/AccountCircleLineIcon";
 import { Form, Link } from "@remix-run/react";
@@ -20,6 +20,10 @@ export const Account = () => {
 
   const { isController } = useClientsTabContext();
 
+  const handleClose = useCallback(() => {
+    setIsOpened(false);
+  }, [setIsOpened]);
+
   return (
     <Container
       classes={clsx(appearanceBtnClsx, isOpened && "z-50")}
@@ -31,7 +35,7 @@ export const Account = () => {
     >
       <AccountIcon size="24" />
 
-      <Dropdown isOpened={isOpened} setIsOpened={setIsOpened}>
+      <Dropdown isOpened={isOpened} handleClose={handleClose}>
         {accountOptions.map((option) => (
           <Fragment key={option.label}>
             {option.pathname === "logout" ? (

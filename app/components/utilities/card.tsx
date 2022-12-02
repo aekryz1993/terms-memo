@@ -1,10 +1,8 @@
-import { Link } from "@remix-run/react";
 import clsx from "clsx";
 
 interface TCardProps extends React.ComponentProps<"li"> {
   children: React.ReactNode;
   isbinned?: string;
-  id: string;
 }
 
 const cardClsx =
@@ -26,9 +24,7 @@ const Card = (props: TCardProps) => {
         className
       )}
     >
-      <Link prefetch="intent" to={`sets/${props.id}`}>
-        {children}
-      </Link>
+      {children}
     </li>
   );
 };

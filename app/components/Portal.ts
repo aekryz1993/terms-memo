@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { usePortal } from "~/hooks/usePortal";
 

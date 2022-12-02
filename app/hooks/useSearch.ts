@@ -5,11 +5,12 @@ import { useCallbackRef } from "./useCallbackRef";
 import { useDebounce } from "./useDebounce";
 
 export const useSearch = () => {
-  const [cancel, setCancel] = useState(false);
   const location = useLocation();
   const [params] = useSearchParams();
   const search = params.get("search");
+
   const [searchState, setSearchState] = useState(search ?? "");
+  const [cancel, setCancel] = useState(false);
 
   const submit = useSubmit();
   const submitRef = useCallbackRef(submit);

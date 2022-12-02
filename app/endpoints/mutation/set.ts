@@ -20,7 +20,7 @@ const CREATE_SET = gql`
 
 const EDIT_SET = gql`
   mutation EditSet($id: String!, $title: String!, $description: String) {
-    editSet(id: $id, title: $title, description: $description) {
+    updateSet(id: $id, title: $title, description: $description) {
       set {
         id
         title

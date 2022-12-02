@@ -10,7 +10,7 @@ const levels: TLevelDB[] = [];
 const terms: TTermDB[] = [];
 
 const createNewWord = (levelId: string) => {
-  [...Array(10)].forEach(() => {
+  [...Array(6)].forEach(() => {
     const term = {
       id: uuid(),
       name: faker.word.adjective(),
@@ -35,7 +35,7 @@ const createNewLevel = (setId: string) => {
 };
 
 const seedSet: () => TSetDB[] = () =>
-  [...Array(500)].map(() => {
+  [...Array(100)].map(() => {
     const set = {
       id: uuid(),
       title: faker.word.noun(),

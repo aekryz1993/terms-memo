@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from "@remix-run/react";
-import { Fragment, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import GlobalLineIcon from "remixicon-react/GlobalLineIcon";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
@@ -18,6 +18,10 @@ export const Language = () => {
 
   useLanguageBroadcast(i18n.language);
 
+  const handleClose = useCallback(() => {
+    setIsOpened(false);
+  }, [setIsOpened]);
+
   return (
     <Container
       classes={clsx(appearanceBtnClsx, isOpened && "z-50")}
@@ -25,7 +29,7 @@ export const Language = () => {
     >
       <GlobalLineIcon size="24" />
 
-      <Dropdown isOpened={isOpened} setIsOpened={setIsOpened}>
+      <Dropdown isOpened={isOpened} handleClose={handleClose}>
         {Object.keys(lngs).map((lng) => (
           <Fragment key={lng}>
             {i18n.language == lng ? (

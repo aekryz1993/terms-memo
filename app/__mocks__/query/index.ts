@@ -7,5 +7,5 @@ import type { TDb } from "../handlers";
 export const query = ({ sets, levels, terms }: TDb) => [
   ...set(sets),
   ...level(levels),
-  ...term(terms),
+  ...term(terms, levels),
 ];

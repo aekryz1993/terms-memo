@@ -22,6 +22,12 @@ export interface TLevelBody {
   setId: string;
 }
 
+export interface TTermBody {
+  name: string;
+  definition?: string | null;
+  levelId: string;
+}
+
 export interface TSet extends TSetBody {
   id: string;
   userId: string;
@@ -32,6 +38,12 @@ export interface TSet extends TSetBody {
 export interface TLevel extends TLevelBody {
   id: string;
   __typename: Typename.Level;
+}
+
+export interface TTerm extends TTermBody {
+  id: string;
+  updatedAt: string;
+  __typename: Typename.Term;
 }
 
 export interface TPaginationParams {

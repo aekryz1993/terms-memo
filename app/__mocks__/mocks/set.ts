@@ -1,4 +1,4 @@
-import { findMany } from "./queries";
+import { filterItems, findMany } from "./queries";
 
 import type { TSetDB } from "~/types/db";
 import type { TSetBody } from "~/types/endpoints";
@@ -58,31 +58,11 @@ export const getSets = (
 ) => {
   const setsByUser = findMany(sets, { label: "userId", value: userId });
 
-  if (setsByUser.length === 0)
-    return {
-      sets: setsByUser,
-      tatolSets: 0,
-      totalPages: 0,
-      currentPage: 1,
-    };
-
-  const sortedSetsByDate = setsByUser.sort(
-    (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()
+  return filterItems(
+    setsByUser,
+    { skip, take, search },
+    { searchField: "title" }
   );
-
-  const searchedSets = search
-    ? sortedSetsByDate.filter((set) =>
-        set.title.toLowerCase().includes(search.toLowerCase())
-      )
-    : sortedSetsByDate;
-
-  const fetchedSets = searchedSets.slice(skip).slice(0, take);
-  return {
-    sets: fetchedSets,
-    tatolSets: searchedSets.length,
-    totalPages: Math.ceil(searchedSets.length / take),
-    currentPage: skip / take + 1,
-  };
 };
 
 export const updateSet = (

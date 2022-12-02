@@ -1,12 +1,14 @@
-import type { TSetBody, TUserBody } from "./endpoints";
+import type { TUserBody } from "./endpoints";
 import type { Level } from "./enums";
 
 export interface TUserDB extends TUserBody {
   id: string;
 }
 
-export interface TSetDB extends TSetBody {
+export interface TSetDB {
   id: string;
+  title: string;
+  description?: string | null;
   userId: string;
   updatedAt: Date;
 }
