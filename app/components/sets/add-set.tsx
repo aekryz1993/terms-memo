@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
-import { SetActionFrom } from "../sets/set-action-form";
-import { SideActionContainer } from "../utilities/side-action-container";
+import { SetActionFrom } from "./set-action-form";
+import { SideActionContainer } from "../utilities/side-add-action";
 
 export const AddSet = () => {
   const [isOpened, setIsOpened] = useState(false);

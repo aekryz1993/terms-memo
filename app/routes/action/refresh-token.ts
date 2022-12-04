@@ -4,7 +4,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { destroyAndRedirect, getAuthSession } from "~/utils/auth.server";
 import { refreshToken } from "~/endpoints/mutation/auth";
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
   const authSession = await getAuthSession(request);
   const requestText = await request.text();
   const form = new URLSearchParams(requestText);

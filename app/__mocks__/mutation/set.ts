@@ -4,15 +4,14 @@ import { Level } from "~/types/enums";
 import { forbiddenError } from "../mocks/auth";
 import { levels } from "../mocks/level";
 import {
-  checkExistSet,
-  createSetDataResponse,
+  alreadyExistSet,
   deleteSet,
-  delteDataResponse,
-  existSetError,
-  notExistSetError,
+  notExistSet,
   updateSet,
 } from "../mocks/set";
 import { apiGraph, validAuth } from "../helpers";
+import { createDataResponse, deleteDataResponse } from "../mocks/responses";
+import { findOne } from "../mocks/queries";
 
 import type { TSetDB } from "~/types/db";
 
@@ -24,9 +23,9 @@ const createSetMock = (sets: TSetDB[]) =>
 
     if (!user) return res(ctx.errors([forbiddenError]));
 
-    const existSet = checkExistSet(title, sets);
+    const existSet = findOne(sets, { label: "title", value: title });
 
-    if (existSet) return res(ctx.errors([existSetError]));
+    if (existSet) return res(ctx.errors([alreadyExistSet]));
 
     const newSet = {
       id: uuid(),
@@ -50,10 +49,11 @@ const createSetMock = (sets: TSetDB[]) =>
 
     return res(
       ctx.data({
-        createSet: createSetDataResponse(
-          newSet,
-          "A new set is successfully created"
-        ),
+        createSet: createDataResponse({
+          docName: "set",
+          doc: newSet,
+          message: "A new set is successfully created",
+        }),
       })
     );
   });
@@ -68,7 +68,7 @@ const editSetMock = (sets: TSetDB[]) =>
 
     const existSet = updateSet(sets, { title, description, id });
 
-    if (!existSet) return res(ctx.errors([notExistSetError]));
+    if (!existSet) return res(ctx.errors([notExistSet]));
 
     const { updatedSet, updatedSetIndex } = existSet;
 
@@ -76,10 +76,11 @@ const editSetMock = (sets: TSetDB[]) =>
 
     return res(
       ctx.data({
-        updateSet: createSetDataResponse(
-          updatedSet,
-          "The set is successfully updated"
-        ),
+        updateSet: createDataResponse({
+          docName: "set",
+          doc: updatedSet,
+          message: "The set is successfully updated",
+        }),
       })
     );
   });
@@ -94,13 +95,13 @@ const deleteSetMock = (sets: TSetDB[]) =>
 
     const deleteSetIndex = deleteSet(sets, { id });
 
-    if (!deleteSetIndex) return res(ctx.errors([notExistSetError]));
+    if (!deleteSetIndex) return res(ctx.errors([notExistSet]));
 
     sets.splice(deleteSetIndex, 1);
 
     return res(
       ctx.data({
-        deleteSet: delteDataResponse("The set is successfully deleted"),
+        deleteSet: deleteDataResponse("The set is successfully deleted"),
       })
     );
   });

@@ -56,12 +56,14 @@ export interface SetsLoaderData extends PaginationLoaderData {
 }
 export interface TermsLoaderData extends PaginationLoaderData {
   terms: TTerm[];
-  token: string;
+}
+
+export interface LevelsLoaderData {
+  levels: TLevel[];
 }
 
 export interface SetLoaderData {
   set: TSet;
-  levels: TLevel[];
 }
 
 export interface RootLoaderData {

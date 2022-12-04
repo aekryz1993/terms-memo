@@ -1,17 +1,8 @@
-import { useCallback } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-
-import {
-  closeBtnContainer,
-  closeBtnIcon,
-  portalContainertClsx,
-  portalRootClsx,
-  titleClsx,
-} from "../styled";
+import { portalContainertClsx, portalRootClsx, titleClsx } from "../styled";
 import { useActionsOption } from "../context";
 import { Portal } from "~/components/Portal";
-import { Box } from "../../layout";
 import { Title } from "../../Typography";
+import { ClosePortalBtn } from "../../close-portal-btn";
 
 export const EditOption = ({
   title,
@@ -35,9 +26,7 @@ export const EditOption = ({
       rootClass={portalRootClsx}
       clsx={portalContainertClsx}
     >
-      <Box classes={closeBtnContainer} onClick={handleCloseEvent}>
-        <XMarkIcon className={closeBtnIcon} />
-      </Box>
+      <ClosePortalBtn handleCloseEvent={handleCloseEvent} />
       <Title classes={titleClsx}>{title}</Title>
       {children}
     </Portal>

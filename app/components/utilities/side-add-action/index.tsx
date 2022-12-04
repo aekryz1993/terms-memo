@@ -1,16 +1,17 @@
 import { useCallback, useRef } from "react";
 import clsx from "clsx";
 
-import { Title } from "./Typography";
+import { Title } from "../Typography";
 import { useListenForOutsideClicks } from "~/hooks/useListenForOutsideClicks";
-import { ControllerIcon } from "../add-set/ControllerIcon";
-
-const container =
-  "fixed z-40 shadow-2xl h-full w-[300px] md:w-[414px] xl:w-[820px] bg-bg-sec_lt dark:bg-bg-sec_dark transition-transform duration-1000 flex flex-col gap-12 px-4 py-12";
-const closedContainer =
-  "-translate-x-[280px] md:-translate-x-[390px] xl:-translate-x-[800px]";
-const openedContainer = "translate-x-0";
-const titleClsx = "text-3xl mx-auto font-black";
+import { ControllerIcon } from "./ControllerIcon";
+import {
+  container,
+  closedContainer,
+  openedContainer,
+  titleClsx,
+  contentContainer,
+} from "./styled";
+import { Box } from "../layout";
 
 export const SideActionContainer = ({
   children,
@@ -36,8 +37,10 @@ export const SideActionContainer = ({
       className={clsx(container, isOpened ? openedContainer : closedContainer)}
       ref={containerRef}
     >
-      <Title classes={titleClsx}>{title}</Title>
-      {children}
+      <Box classes={contentContainer}>
+        <Title classes={titleClsx}>{title}</Title>
+        {children}
+      </Box>
       <ControllerIcon isOpened={isOpened} setIsOpened={setIsOpened} />
     </div>
   );

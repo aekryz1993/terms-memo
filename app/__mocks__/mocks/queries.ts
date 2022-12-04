@@ -3,6 +3,11 @@ const findMany = (
   { label, value }: { label: string; value: string }
 ) => collection.filter((doc) => doc[label] === value);
 
+const findOne = (
+  collection: any[],
+  { label, value }: { label: string; value: string }
+) => collection.find((doc) => doc[label] === value);
+
 const findById = (collection: any[], { id }: { id: string }) =>
   collection.find((doc) => doc.id === id);
 
@@ -39,4 +44,4 @@ const filterItems = (
   };
 };
 
-export { findById, findMany, filterItems };
+export { findById, findMany, findOne, filterItems };

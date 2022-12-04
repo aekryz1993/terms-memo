@@ -6,7 +6,7 @@ import { useDelete } from "../utilities/actions-option/hooks/useDeleteSet";
 import { useActionsOption } from "../utilities/actions-option/context";
 import { DeleteOption } from "../utilities/actions-option/options/delete-option";
 import { EditOption } from "../utilities/actions-option/options/edit-option";
-import { TermActionFrom } from "./term-actrion-form";
+import { TermActionFrom } from "./term-action-form";
 
 import type { TOption } from "../utilities/actions-option/context/types";
 import type { TTerm } from "~/types/endpoints";

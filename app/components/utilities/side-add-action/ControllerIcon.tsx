@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 import { openOrCloseIcon, closeIcon, openIcon, openOrCloseBox } from "./styled";
-import { Box } from "../utilities/layout";
+import { Box } from "../layout";
 
 export const ControllerIcon = ({
   isOpened,

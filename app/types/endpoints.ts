@@ -25,7 +25,7 @@ export interface TLevelBody {
 export interface TTermBody {
   name: string;
   definition?: string | null;
-  levelId: string;
+  levelId?: string;
 }
 
 export interface TSet extends TSetBody {
@@ -49,5 +49,5 @@ export interface TTerm extends TTermBody {
 export interface TPaginationParams {
   skip: number;
   take: number;
-  search: string | null;
+  search?: string | null;
 }

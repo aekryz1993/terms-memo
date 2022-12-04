@@ -1,9 +1,10 @@
 import { filterItems, findMany } from "./queries";
+import { userInputError } from "./responses";
 
 import type { TSetDB } from "~/types/db";
 import type { TSetBody } from "~/types/endpoints";
 
-export const dbSets: () => TSetDB[] = () => [
+const dbSets: () => TSetDB[] = () => [
   {
     id: "set_0",
     title: "set_0",
@@ -13,41 +14,17 @@ export const dbSets: () => TSetDB[] = () => [
   },
 ];
 
-export const newSetBody: Readonly<TSetBody> = {
+const newSetBody: Readonly<TSetBody> = {
   title: "set_1",
   description: "set_1_description",
 };
 
-export const newSet: Readonly<TSetBody> = {
+const newSet: Readonly<TSetBody> = {
   title: newSetBody.title,
   description: newSetBody.description,
 };
 
-export const createSetDataResponse = (set: TSetBody, message: string) => ({
-  set,
-  statusCode: 200,
-  message,
-});
-
-export const delteDataResponse = (message: string) => ({
-  statusCode: 200,
-  message,
-});
-
-export const checkExistSet = (title: string, sets: TSetDB[]) =>
-  sets.find((set) => set.title === title);
-
-export const existSetError = {
-  message: "This set's name is already exist",
-  errorType: "UserInputError",
-};
-
-export const notExistSetError = {
-  message: "This set is not exist",
-  errorType: "UserInputError",
-};
-
-export const getSets = (
+const getSets = (
   sets: TSetDB[],
   {
     skip,
@@ -65,7 +42,7 @@ export const getSets = (
   );
 };
 
-export const updateSet = (
+const updateSet = (
   sets: TSetDB[],
   { title, description, id }: Pick<TSetDB, "title" | "description" | "id">
 ) => {
@@ -82,14 +59,14 @@ export const updateSet = (
   return { updatedSet, updatedSetIndex };
 };
 
-export const deleteSet = (sets: TSetDB[], { id }: Pick<TSetDB, "id">) => {
+const deleteSet = (sets: TSetDB[], { id }: Pick<TSetDB, "id">) => {
   const deleteSetIndex = sets.findIndex((set) => set.id === id);
   if (deleteSetIndex < 0) return false;
 
   return deleteSetIndex;
 };
 
-export const buildSet = ({
+const buildSet = ({
   title,
   description,
   userId,
@@ -98,3 +75,18 @@ export const buildSet = ({
   description: string;
   userId: string;
 }) => ({ id: title, title, description, userId });
+
+const notExistSet = userInputError("This set is not exist");
+const alreadyExistSet = userInputError("This set's name is already exist");
+
+export {
+  dbSets,
+  newSetBody,
+  newSet,
+  getSets,
+  updateSet,
+  deleteSet,
+  buildSet,
+  notExistSet,
+  alreadyExistSet,
+};

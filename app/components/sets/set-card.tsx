@@ -18,7 +18,7 @@ export const SetCard = ({ set }: { set: TSet }) => {
   return (
     <Card isbinned={isBinned ? isBinned.toString() : undefined}>
       <ActionsOption set={set} />
-      <Link prefetch="intent" to={`sets/${set.id}`}>
+      <Link prefetch="intent" to={`set/${set.id}/levels`}>
         <Box classes={headerClasses}>
           <Title>{set.title}</Title>
           <SubTitle>Latest update: {customDate(set.updatedAt)}</SubTitle>

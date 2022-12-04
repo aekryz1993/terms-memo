@@ -1,11 +1,11 @@
 import { auth } from "./auth";
 import { set } from "./set";
-import { level } from "./level";
+import { term } from "./term";
 
 import type { TDb } from "../handlers";
 
-export const mutation = ({ sets }: TDb) => [
+export const mutation = ({ sets, terms }: TDb) => [
   ...auth(),
   ...set(sets),
-  ...level(),
+  ...term(terms),
 ];

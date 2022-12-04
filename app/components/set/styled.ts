@@ -2,49 +2,26 @@ import clsx from "clsx";
 
 import { centerVertically } from "../utilities/layout";
 
-const levelsNavContainerClsx = `${clsx(
-  "relative w-full py-4 bg-bg-sec_lt dark:bg-bg-sec_dark sm:bg-transparent dark:sm:bg-transparent sm:py-12",
+const containerClsx = `${clsx(
+  "w-full bg-bg-sec_lt dark:bg-bg-sec_dark sm:bg-transparent dark:sm:bg-transparent py-4 md:pt-10 md:pb-0",
   centerVertically
 )}`;
 
-const xslevelsNavClsx =
-  "flex justify-between items-center cursor-pointer mx-4 w-full rounded-md px-2 py-1 border-2 border-bg-input_lt dark:border-bg-input_dark text-lg text-text-active_lt dark:text-text-active_dark sm:hidden";
-const levelsNavClsx = "hidden sm:flex gap-8 items-center";
-3;
+const titleClsx = "text-3xl md:text-4xl";
+const displayMoreBoxClsx =
+  "relative -top-1 left-1 cursor-pointer rounded-full bg-white";
+const displayMoreClsx =
+  "w-3 h-3 sm:w-4 sm:h-4 text-alert-info_lt dark:text-alert-info_dark";
 
-const modalRootClsx = "fixed w-full h-full top-0 left-0 bg-[rgba(0,0,0,0.5)]";
-
-const modalContainerClsx =
-  "relative top-2/4 -translate-y-2/4 bg-bg-sec_lt dark:bg-bg-sec_dark px-2 pb-4 pt-14 mt-4 sm:hidden flex flex-col gap-4";
-
-const levelBorderColor = {
-  All: "border-l-alert-info_lt dark:border-l-alert-info_dark",
-  Difficult: "border-l-alert-danger_lt dark:border-l-alert-danger_dark",
-  Medium: "border-l-alert-warning_lt dark:border-l-alert-warning_dark",
-  Perfect: "border-l-alert-success_lt dark:border-l-alert-success_dark",
-};
-
-const levelContainerClsx =
-  "px-4 py-2 border-l-solid border-l-8 rounded cursor-pointer text-lg";
-
-const inactiveLevelClsx =
-  "border border-bg-input_lt dark:border-bg-input_dark sm:border-0 sm:border-l-8";
-
-const activeLevelClsx = "bg-bg-sel_lt dark:bg-bg-sel_dark text-white";
-
-const arrowDownIconClsx = "w-5 h-5 text-text-other_lt dark:text-white";
-const closeIconClsx = "w-6 h-6 absolute right-2 top-2";
+const portalRootClsx = "fixed top-0 z-50 w-full h-full bg-[rgba(0,0,0,0.7)]";
+const portalContainertClsx =
+  "absolute top-56 left-0 right-0 mx-auto bg-bg-sec_lt dark:bg-bg-sec_dark max-h-[50%] md:max-h-max w-[90%] md:w-[414px] xl:w-[820px] rounded-lg drop-shadow-2xl pt-16 pb-12 px-12 text-justify";
 
 export {
-  levelsNavContainerClsx,
-  xslevelsNavClsx,
-  levelsNavClsx,
-  levelBorderColor,
-  levelContainerClsx,
-  activeLevelClsx,
-  inactiveLevelClsx,
-  arrowDownIconClsx,
-  modalRootClsx,
-  modalContainerClsx,
-  closeIconClsx,
+  containerClsx,
+  titleClsx,
+  displayMoreBoxClsx,
+  displayMoreClsx,
+  portalRootClsx,
+  portalContainertClsx,
 };
