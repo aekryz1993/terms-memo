@@ -1,5 +1,5 @@
-import { memo } from "react";
-import { NavLink, useLoaderData } from "@remix-run/react";
+import { memo, useEffect } from "react";
+import { NavLink, useLoaderData, useParams } from "@remix-run/react";
 import clsx from "clsx";
 
 import { Box } from "../utilities/layout";
@@ -15,6 +15,7 @@ import type { LevelsLoaderData } from "~/types/data";
 
 export const LevelsNavItems = memo(() => {
   const { levels } = useLoaderData<LevelsLoaderData>();
+  const { levelId } = useParams();
 
   const {
     state: { currentLevel },
@@ -27,9 +28,15 @@ export const LevelsNavItems = memo(() => {
     updateLevel(itemName);
   };
 
+  useEffect(() => {
+    if (levelId) {
+      updateLevel(levelId);
+    }
+  }, [levelId]);
+
   return (
     <>
-      <NavLink prefetch="intent" to="levels">
+      <NavLink prefetch="intent" to="levels" replace>
         <Box
           classes={clsx(
             levelContainerClsx,
@@ -43,16 +50,21 @@ export const LevelsNavItems = memo(() => {
       </NavLink>
       {levels?.length
         ? levels.map((level) => (
-            <NavLink key={level.id} prefetch="intent" to={`levels/${level.id}`}>
+            <NavLink
+              key={level.id}
+              prefetch="intent"
+              to={`levels/${level.id}`}
+              replace
+            >
               <Box
                 classes={clsx(
                   levelContainerClsx,
                   levelBorderColor[level.name],
-                  currentLevel === level.name
+                  currentLevel === level.id
                     ? activeLevelClsx
                     : inactiveLevelClsx
                 )}
-                onClick={() => updateLevel(level.name)}
+                onClick={() => updateLevel(level.id)}
               >
                 {level.name}
               </Box>

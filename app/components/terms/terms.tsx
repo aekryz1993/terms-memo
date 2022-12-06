@@ -1,5 +1,3 @@
-import { useRef } from "react";
-
 import { GridContainer } from "../sets/styled";
 import { ActionsOptionProvider } from "../utilities/actions-option/context/provider";
 
@@ -9,6 +7,7 @@ import { TermCard } from "./term-card";
 const options = {
   edit: false,
   delete: false,
+  move: false,
 };
 
 export const Terms = ({ terms }: { terms: TTerm[] }) => {

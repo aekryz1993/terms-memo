@@ -32,10 +32,12 @@ export type SetActionData = {
 export type TermActionData = {
   formError?: string;
   fieldErrors?: {
-    name: string | undefined;
+    name?: string | undefined;
+    levelId?: string | undefined;
   };
   fields?: {
-    name: string;
+    name?: string;
+    levelId?: string;
   };
 };
 

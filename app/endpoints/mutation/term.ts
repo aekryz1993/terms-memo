@@ -18,8 +18,22 @@ const CREATE_TERM = gql`
 `;
 
 const EDIT_TERM = gql`
-  mutation EditTerm($id: String!, $title: String!, $description: String) {
-    updateTerm(id: $id, title: $title, description: $description) {
+  mutation EditTerm($id: String!, $name: String!, $definition: String) {
+    updateTerm(id: $id, name: $name, definition: $definition) {
+      term {
+        id
+        name
+        definition
+      }
+      statusCode
+      message
+    }
+  }
+`;
+
+const MOVE_TERM = gql`
+  mutation MoveTerm($id: String!, $levelId: String!) {
+    moveTerm(id: $id, levelId: $levelId) {
       term {
         id
         name
@@ -41,12 +55,12 @@ const DELETE_TERM = gql`
 `;
 
 export async function createTerm(
-  { name, definition }: TTermBody,
+  { levelId, name, definition }: TTermBody,
   token: string
 ) {
   const response = await client.mutate({
     mutation: CREATE_TERM,
-    variables: { name, definition },
+    variables: { levelId, name, definition },
     context: setContext(token),
   });
 
@@ -60,6 +74,19 @@ export async function editTerm(
   const response = await client.mutate({
     mutation: EDIT_TERM,
     variables: { id, name, definition },
+    context: setContext(token),
+  });
+
+  return response;
+}
+
+export async function moveTerm(
+  { id, levelId }: { id: string; levelId: string },
+  token: string
+) {
+  const response = await client.mutate({
+    mutation: MOVE_TERM,
+    variables: { id, levelId },
     context: setContext(token),
   });
 

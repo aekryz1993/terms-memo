@@ -1,4 +1,5 @@
 import { ActionFunction, json, redirect } from "@remix-run/node";
+import { useCatch } from "@remix-run/react";
 
 import { fetchSets } from "~/endpoints/query/sets";
 import { getAuthSession } from "~/utils/auth.server";
@@ -112,4 +113,11 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Index() {
   return <SetsLayout />;
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+  console.log(caught);
+
+  return <div>Huh... Couldn't find an client with the ID of:</div>;
 }

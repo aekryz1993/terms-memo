@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 
 export const useSubmitForm = ({
   setFields,
+  initialState,
   handleClose,
 }: {
   setFields: React.Dispatch<
@@ -10,21 +11,26 @@ export const useSubmitForm = ({
       [key: string]: string;
     }>
   >;
+  initialState: { [key: string]: string };
   handleClose: () => void;
 }) => {
   const isSubmitRef = useRef(false);
   const transition = useTransition();
 
+  const mainFieldKey = Object.keys(initialState)[0];
+
   const state = transition.state;
-  const hasTitle = transition.submission?.formData.get("title") ? true : false;
+  const hasValue = transition.submission?.formData.get(mainFieldKey)
+    ? true
+    : false;
 
   useEffect(() => {
     if (state === "idle" && isSubmitRef.current) {
-      setFields({ title: "", description: "" });
+      setFields(() => initialState);
       isSubmitRef.current = false;
-    } else if (state === "submitting" && hasTitle) {
+    } else if (state === "submitting" && hasValue) {
       isSubmitRef.current = true;
       handleClose();
     }
-  }, [state, hasTitle, handleClose]);
+  }, [state, hasValue, handleClose]);
 };

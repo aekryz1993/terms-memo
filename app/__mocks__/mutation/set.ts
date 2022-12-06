@@ -2,7 +2,6 @@ import { v4 as uuid } from "uuid";
 
 import { Level } from "~/types/enums";
 import { forbiddenError } from "../mocks/auth";
-import { levels } from "../mocks/level";
 import {
   alreadyExistSet,
   deleteSet,
@@ -13,9 +12,9 @@ import { apiGraph, validAuth } from "../helpers";
 import { createDataResponse, deleteDataResponse } from "../mocks/responses";
 import { findOne } from "../mocks/queries";
 
-import type { TSetDB } from "~/types/db";
+import type { TLevelDB, TSetDB } from "~/types/db";
 
-const createSetMock = (sets: TSetDB[]) =>
+const createSetMock = (sets: TSetDB[], levels: TLevelDB[]) =>
   apiGraph.mutation("CreateSet", async (req, res, ctx) => {
     const { title, description } = req.variables;
 
@@ -37,15 +36,14 @@ const createSetMock = (sets: TSetDB[]) =>
 
     sets.push(newSet);
 
-    if (process.env.NODE_ENV !== "test") {
-      [Level.Perfect, Level.Medium, Level.Difficult].forEach((cardName) => {
-        levels.push({
-          id: uuid(),
-          name: cardName,
-          setId: title,
-        });
-      });
-    }
+    Object.values(Level).forEach((level) => {
+      const newLevel = {
+        id: uuid(),
+        name: Level[level],
+        setId: newSet.id,
+      };
+      levels.push(newLevel);
+    });
 
     return res(
       ctx.data({
@@ -106,8 +104,8 @@ const deleteSetMock = (sets: TSetDB[]) =>
     );
   });
 
-export const set = (sets: TSetDB[]) => [
-  createSetMock(sets),
+export const set = (sets: TSetDB[], levels: TLevelDB[]) => [
+  createSetMock(sets, levels),
   editSetMock(sets),
   deleteSetMock(sets),
 ];

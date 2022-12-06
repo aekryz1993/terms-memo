@@ -4,24 +4,26 @@ import { forbiddenError } from "../mocks/auth";
 import {
   alreadyExistTerm,
   deleteTerm,
+  moveTerm,
   notExistTerm,
   updateTerm,
 } from "../mocks/term";
 import { apiGraph, validAuth } from "../helpers";
 import { findOne } from "../mocks/queries";
 import { createDataResponse } from "../mocks/responses";
+import { deleteDataResponse } from "../mocks/responses";
+import { notExistLevel } from "../mocks/level";
 
 import type { TTermDB } from "~/types/db";
-import { deleteDataResponse } from "../mocks/responses";
 
 const createTermMock = (terms: TTermDB[]) =>
-  apiGraph.mutation("CreateSet", async (req, res, ctx) => {
+  apiGraph.mutation("CreateTerm", async (req, res, ctx) => {
     const { user } = await validAuth(req);
     if (!user) return res(ctx.errors([forbiddenError]));
 
     const { levelId, name, definition } = req.variables;
 
-    if (!levelId) return res(ctx.errors([notExistTerm]));
+    if (!levelId) return res(ctx.errors([notExistLevel]));
 
     const existTerm = findOne(terms, { label: "name", value: name });
 
@@ -49,7 +51,7 @@ const createTermMock = (terms: TTermDB[]) =>
   });
 
 const editTermMock = (terms: TTermDB[]) =>
-  apiGraph.mutation("EditSet", async (req, res, ctx) => {
+  apiGraph.mutation("EditTerm", async (req, res, ctx) => {
     const { name, definition, id } = req.variables;
 
     const { user } = await validAuth(req);
@@ -74,8 +76,34 @@ const editTermMock = (terms: TTermDB[]) =>
     );
   });
 
+const moveTermMock = (terms: TTermDB[]) =>
+  apiGraph.mutation("MoveTerm", async (req, res, ctx) => {
+    const { levelId, id } = req.variables;
+
+    const { user } = await validAuth(req);
+    if (!user) return res(ctx.errors([forbiddenError]));
+
+    const existTerm = moveTerm(terms, { levelId, id });
+
+    if (!existTerm) return res(ctx.errors([notExistTerm]));
+
+    const { updatedTerm, updatedTermIndex } = existTerm;
+
+    terms[updatedTermIndex] = updatedTerm;
+
+    return res(
+      ctx.data({
+        moveTerm: createDataResponse({
+          docName: "term",
+          doc: updatedTerm,
+          message: "The term is successfully updated",
+        }),
+      })
+    );
+  });
+
 const deleteTermMock = (terms: TTermDB[]) =>
-  apiGraph.mutation("DeleteSet", async (req, res, ctx) => {
+  apiGraph.mutation("DeleteTerm", async (req, res, ctx) => {
     const { id } = req.variables;
 
     const { user } = await validAuth(req);
@@ -97,5 +125,6 @@ const deleteTermMock = (terms: TTermDB[]) =>
 export const term = (terms: TTermDB[]) => [
   createTermMock(terms),
   editTermMock(terms),
+  moveTermMock(terms),
   deleteTermMock(terms),
 ];

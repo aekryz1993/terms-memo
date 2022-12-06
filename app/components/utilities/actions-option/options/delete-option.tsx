@@ -17,9 +17,11 @@ import {
 
 export const DeleteOption = ({
   text,
+  id,
   deleteTimerIdRef,
 }: {
   text: string;
+  id: string;
   deleteTimerIdRef: React.MutableRefObject<number | NodeJS.Timeout | null>;
 }) => {
   const { cancelBinned, closeModalOption } = useActionsOption();
@@ -38,11 +40,7 @@ export const DeleteOption = ({
   };
 
   return (
-    <Portal
-      id="delete-set"
-      rootClass={deleteRootclsx}
-      clsx={deleteContainerClsx}
-    >
+    <Portal id={id} rootClass={deleteRootclsx} clsx={deleteContainerClsx}>
       <Box>
         <Sentence>{text}</Sentence>
       </Box>

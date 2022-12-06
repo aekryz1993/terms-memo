@@ -1,4 +1,5 @@
 import { json, redirect } from "@remix-run/node";
+import { useCatch } from "@remix-run/react";
 
 import { validatePassword, validateUsername } from "~/utils/helpers";
 import { AuthLayout } from "~/components/auth";
@@ -78,4 +79,11 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Index() {
   return <AuthLayout />;
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+  console.log(caught);
+
+  return <div>Huh... Couldn't find an client with the ID of:</div>;
 }

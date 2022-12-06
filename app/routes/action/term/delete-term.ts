@@ -1,12 +1,12 @@
 import { json } from "@remix-run/node";
 
 import { getAuthSession } from "~/utils/auth.server";
-import { deleteSet } from "~/endpoints/mutation/set";
+import { deleteTerm } from "~/endpoints/mutation/term";
 
 import type { ActionFunction } from "@remix-run/node";
-import type { SetActionData } from "~/types/data";
+import type { TermActionData } from "~/types/data";
 
-export const badRequest = (data: SetActionData) => json(data, { status: 400 });
+export const badRequest = (data: TermActionData) => json(data, { status: 400 });
 
 export const action: ActionFunction = async ({ request }) => {
   const authSession = await getAuthSession(request);
@@ -21,13 +21,13 @@ export const action: ActionFunction = async ({ request }) => {
 
   if (typeof id !== "string") {
     return badRequest({
-      formError: `Form not submitted correctly.`,
+      formError: `Form not submitted correctly. (ID) must be provided`,
     });
   }
 
   try {
-    const response = await deleteSet({ id }, token);
-    return json({ ...response.data.deleteSet, actionType: "delete-set" });
+    const response = await deleteTerm({ id }, token);
+    return json({ ...response.data.deleteTerm, actionType: "delete-term" });
   } catch (error: any) {
     return badRequest({
       formError: error.message,

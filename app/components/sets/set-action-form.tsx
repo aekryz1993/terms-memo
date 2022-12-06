@@ -1,7 +1,7 @@
 import { useActionData } from "@remix-run/react";
+import { useMemo } from "react";
 
 import { Field, TextareaField } from "../utilities/inputs";
-
 import { ActionFrom } from "../utilities/action-form";
 import { useFields } from "~/hooks/useFields";
 import { useSubmitForm } from "~/hooks/use-submit-form";
@@ -9,9 +9,15 @@ import { useSubmitForm } from "~/hooks/use-submit-form";
 import type { SetActionData } from "~/types/data";
 import type { TSet } from "~/types/endpoints";
 
-const initialFields = (set?: TSet) => ({
-  title: set?.title ?? "",
-  description: set?.description ?? "",
+const initialFields = ({
+  title,
+  description,
+}: {
+  title?: string | null;
+  description?: string | null;
+}) => ({
+  title: title ?? "",
+  description: description ?? "",
 });
 
 export const SetActionFrom = ({
@@ -26,9 +32,15 @@ export const SetActionFrom = ({
   buttonLabel: string;
 }) => {
   const actionData = useActionData<SetActionData>();
-  const { fieldProps, fields, setFields } = useFields(() => initialFields(set));
 
-  useSubmitForm({ setFields, handleClose });
+  const initialState = useMemo(
+    () => initialFields({ title: set?.title, description: set?.description }),
+    [set?.title, set?.description]
+  );
+
+  const { fieldProps, fields, setFields } = useFields(() => initialState);
+
+  useSubmitForm({ setFields, initialState, handleClose });
 
   return (
     <ActionFrom actionType={actionType} buttonLabel={buttonLabel}>

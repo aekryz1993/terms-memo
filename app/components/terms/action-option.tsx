@@ -7,6 +7,7 @@ import { useActionsOption } from "../utilities/actions-option/context";
 import { DeleteOption } from "../utilities/actions-option/options/delete-option";
 import { EditOption } from "../utilities/actions-option/options/edit-option";
 import { TermActionFrom } from "./term-action-form";
+import { MoveTerm } from "./move-term";
 
 import type { TOption } from "../utilities/actions-option/context/types";
 import type { TTerm } from "~/types/endpoints";
@@ -14,6 +15,7 @@ import type { TTerm } from "~/types/endpoints";
 const options: TOption[] = [
   { label: "Edit", actionType: "edit" },
   { label: "Delete", actionType: "delete" },
+  { label: "Move", actionType: "move" },
 ];
 
 export const ActionsOption = ({ term }: { term: TTerm }) => {
@@ -28,9 +30,14 @@ export const ActionsOption = ({ term }: { term: TTerm }) => {
     actionType: "delete-term",
   });
 
-  const handleClose = useCallback(() => {
-    closeModalOption({ actionName: "edit" });
-  }, [closeModalOption]);
+  const handleClose = useCallback(
+    (actionType: string) => () => {
+      closeModalOption({ actionName: actionType });
+    },
+    [closeModalOption]
+  );
+
+  const { id, levelId } = term;
 
   return (
     <>
@@ -38,18 +45,25 @@ export const ActionsOption = ({ term }: { term: TTerm }) => {
         <Options options={options} setDeleteTimer={setDeleteTimer} />
       </ActionsOptionLayout>
 
-      {isOpenedModal.edit ? (
-        <EditOption title="Edit the Term">
+      {isOpenedModal.edit && levelId ? (
+        <EditOption title="Edit the Term" id="edit-term">
           <TermActionFrom
             term={term}
             actionType="edit"
-            handleClose={handleClose}
+            handleClose={handleClose("edit")}
             buttonLabel="Update"
           />
         </EditOption>
       ) : null}
-      {isOpenedModal.delete ? (
-        <DeleteOption text="Term binned" deleteTimerIdRef={deleteTimerIdRef} />
+      {isOpenedModal.delete && levelId ? (
+        <DeleteOption
+          text="Term binned"
+          deleteTimerIdRef={deleteTimerIdRef}
+          id="delete-term"
+        />
+      ) : null}
+      {isOpenedModal.move && levelId ? (
+        <MoveTerm term={{ id, levelId }} handleClose={handleClose("move")} />
       ) : null}
     </>
   );

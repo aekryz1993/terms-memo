@@ -56,6 +56,22 @@ const updateTerm = (
   return { updatedTerm, updatedTermIndex };
 };
 
+const moveTerm = (
+  terms: TTermDB[],
+  { levelId, id }: Pick<TTermDB, "levelId" | "id">
+) => {
+  const updatedTermIndex = terms.findIndex((term) => term.id === id);
+  if (updatedTermIndex < 0) return false;
+
+  const updatedTerm = {
+    ...terms[updatedTermIndex],
+    levelId,
+    updatedAt: new Date(Date.now()),
+  };
+
+  return { updatedTerm, updatedTermIndex };
+};
+
 const deleteTerm = (terms: TTermDB[], { id }: Pick<TTermDB, "id">) => {
   const deleteTermIndex = terms.findIndex((term) => term.id === id);
   if (deleteTermIndex < 0) return false;
@@ -71,6 +87,7 @@ export {
   findAllSetTerms,
   findLevelTerms,
   updateTerm,
+  moveTerm,
   deleteTerm,
   notExistTerm,
   alreadyExistTerm,

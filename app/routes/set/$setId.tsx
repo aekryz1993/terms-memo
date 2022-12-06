@@ -1,10 +1,11 @@
 import { json, redirect } from "@remix-run/node";
+import { useCatch } from "@remix-run/react";
 
 import { fetchSet } from "~/endpoints/query/sets";
 import { getAuthSession } from "~/utils/auth.server";
 import { SetLayout } from "~/components/set";
 import { fetchSetLevels } from "~/endpoints/query/levels";
-import { createTerm, editTerm } from "~/endpoints/mutation/term";
+import { createTerm } from "~/endpoints/mutation/term";
 import { validateTitle } from "~/utils/helpers";
 
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
@@ -48,7 +49,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   const { setId } = params;
 
   const form = await request.formData();
-  const id = form.get("id");
   const levelId = form.get("levelId");
   const name = form.get("name");
   const definition = form.get("definition");
@@ -81,21 +81,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           });
         }
         await createTerm({ levelId, name, definition }, token);
-        return redirect(`.`);
-      }
-      case "edit": {
-        if (typeof id !== "string") {
-          return badRequest({
-            formError: `Form not submitted correctly. (ID) must be provided`,
-          });
-        }
-        const responseEditTerm = await editTerm(
-          { id, name, definition },
-          token
-        );
-
-        const termLevelId = responseEditTerm.data.updateTerm.term.levelId;
-        return redirect(`.`);
+        return redirect(`/set/${setId}/levels/${levelId}`);
       }
       default: {
         return badRequest({
@@ -113,4 +99,11 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 export default function Set() {
   return <SetLayout />;
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+  console.log(caught);
+
+  return <div>Huh... Couldn't find an client with the ID of:</div>;
 }

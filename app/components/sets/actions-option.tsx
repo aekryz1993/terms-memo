@@ -39,7 +39,7 @@ export const ActionsOption = ({ set }: { set: TSet }) => {
       </ActionsOptionLayout>
 
       {isOpenedModal.edit ? (
-        <EditOption title="Edit the Set">
+        <EditOption title="Edit the Set" id="edit-set">
           <SetActionFrom
             set={set}
             actionType="edit"
@@ -49,7 +49,11 @@ export const ActionsOption = ({ set }: { set: TSet }) => {
         </EditOption>
       ) : null}
       {isOpenedModal.delete ? (
-        <DeleteOption text="Set binned" deleteTimerIdRef={deleteTimerIdRef} />
+        <DeleteOption
+          text="Set binned"
+          deleteTimerIdRef={deleteTimerIdRef}
+          id="delete-set"
+        />
       ) : null}
     </>
   );

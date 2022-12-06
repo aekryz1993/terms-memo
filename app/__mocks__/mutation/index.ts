@@ -4,8 +4,8 @@ import { term } from "./term";
 
 import type { TDb } from "../handlers";
 
-export const mutation = ({ sets, terms }: TDb) => [
+export const mutation = ({ sets, levels, terms }: TDb) => [
   ...auth(),
-  ...set(sets),
+  ...set(sets, levels),
   ...term(terms),
 ];

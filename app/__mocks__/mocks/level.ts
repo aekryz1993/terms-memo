@@ -1,5 +1,6 @@
 import { Level } from "~/types/enums";
 import { newSetBody } from "./set";
+import { userInputError } from "./responses";
 
 import type { TLevelDB } from "~/types/db";
 import type { TLevelBody } from "~/types/endpoints";
@@ -30,10 +31,13 @@ const difficultLevel: Readonly<TLevelBody> = {
   setId: newSetBody.title,
 };
 
+const notExistLevel = userInputError("This level is not exist");
+
 export {
   levels,
   createLevelDataResponse,
   perfectLvel,
   mediumLevel,
   difficultLevel,
+  notExistLevel,
 };

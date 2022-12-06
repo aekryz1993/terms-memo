@@ -18,7 +18,8 @@ export const TermCard = ({ term }: { term: TTerm }) => {
   return (
     <Card isbinned={isBinned ? isBinned.toString() : undefined}>
       <ActionsOption term={term} />
-      <Link prefetch="intent" to={`terms/${term.id}`}>
+      <Link to={`terms/${term.id}`}>
+        {/* <Link prefetch="intent" to={`terms/${term.id}`}> */}
         <Box classes={headerClasses}>
           <Title>{term.name}</Title>
           <SubTitle>Latest update: {customDate(term.updatedAt)}</SubTitle>

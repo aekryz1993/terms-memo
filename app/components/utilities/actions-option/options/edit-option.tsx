@@ -6,9 +6,11 @@ import { ClosePortalBtn } from "../../close-portal-btn";
 
 export const EditOption = ({
   title,
+  id,
   children,
 }: {
   title: string;
+  id: string;
   children: React.ReactNode;
 }) => {
   const { closeModalOption } = useActionsOption();
@@ -21,11 +23,7 @@ export const EditOption = ({
   };
 
   return (
-    <Portal
-      id="edit-set"
-      rootClass={portalRootClsx}
-      clsx={portalContainertClsx}
-    >
+    <Portal id={id} rootClass={portalRootClsx} clsx={portalContainertClsx}>
       <ClosePortalBtn handleCloseEvent={handleCloseEvent} />
       <Title classes={titleClsx}>{title}</Title>
       {children}
