@@ -1,7 +1,7 @@
 import { useActionData, useParams } from "@remix-run/react";
 import { useMemo } from "react";
 
-import { Field, TextareaField } from "../utilities/inputs";
+import { ErrorMessageField, Field, TextareaField } from "../utilities/inputs";
 
 import { ActionFrom } from "../utilities/action-form";
 import { useFields } from "~/hooks/useFields";
@@ -71,18 +71,15 @@ export const TermActionFrom = ({
         rows={5}
         maxLength={130}
       />
-      {actionType === "add" ? <></> : null}
       {currentLevel && actionType === "add" ? (
         <>
           <input type="hidden" name="levelId" value={currentLevel} />
-          <LevelsCheckBox />{" "}
+          <LevelsCheckBox />
         </>
       ) : null}
-      {/**TODO: re-style */}
+
       {actionData?.formError ? (
-        <p className="form-validation-error" role="alert">
-          {actionData.formError}
-        </p>
+        <ErrorMessageField>{actionData.formError}</ErrorMessageField>
       ) : null}
     </ActionFrom>
   );
