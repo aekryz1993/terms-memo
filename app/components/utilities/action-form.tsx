@@ -19,7 +19,7 @@ const ActionFrom = ({
   children: React.ReactNode;
 }) => {
   return (
-    <Form method="post" className={formClasses}>
+    <Form method="post" className={formClasses} replace>
       <input type="hidden" name="actionType" value={actionType} />
       {children}
       <PrimaryButton type="submit" classes={submitBtn}>

@@ -1,5 +1,5 @@
-import { GridContainer } from "../sets/styled";
 import { ActionsOptionProvider } from "../utilities/actions-option/context/provider";
+import { GridContainer } from "../utilities/layout";
 
 import { TTerm } from "~/types/endpoints";
 import { TermCard } from "./term-card";

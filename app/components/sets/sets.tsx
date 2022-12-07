@@ -1,9 +1,8 @@
 import { SetCard } from "./set-card";
-import { GridContainer } from "./styled";
+import { GridContainer } from "../utilities/layout";
 
 import { TSet } from "~/types/endpoints";
 import { ActionsOptionProvider } from "../utilities/actions-option/context/provider";
-import { useRef } from "react";
 
 const options = {
   edit: false,

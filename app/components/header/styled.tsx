@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react";
 import { Box } from "../utilities/layout";
 
 const containerClsx =
@@ -18,11 +19,13 @@ const dropDownSlot =
 
 const Logo = () => {
   return (
-    <Box classes="flex justify-center items-center">
-      <h1 className="logo-text text-text-tag_lt dark:text-text-active_dark">
-        ENGLISH MEMO
-      </h1>
-    </Box>
+    <Link to="/">
+      <Box classes="flex justify-center items-center">
+        <h1 className="logo-text text-text-tag_lt dark:text-text-active_dark">
+          ENGLISH MEMO
+        </h1>
+      </Box>
+    </Link>
   );
 };
 

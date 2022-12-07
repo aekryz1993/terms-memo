@@ -102,4 +102,25 @@ const Sentence = (props: TSentence) => {
   );
 };
 
-export { Title, SubTitle, Paragraph, Sentence };
+const errorMessageClassesLight = "text-alert-danger_lt";
+const errorMessageClassesDark = "dark:text-alert-danger_dark";
+
+const ErrorMessage = (props: TParagraph) => {
+  const { className, classes, children, ...errorMessageProps } = props;
+  return (
+    <p
+      {...errorMessageProps}
+      className={clsx(
+        classes,
+        paragraphClasses,
+        errorMessageClassesLight,
+        errorMessageClassesDark,
+        className
+      )}
+    >
+      {children}
+    </p>
+  );
+};
+
+export { Title, SubTitle, Paragraph, Sentence, ErrorMessage };

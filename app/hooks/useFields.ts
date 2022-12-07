@@ -40,3 +40,31 @@ export const useFields = (initialFields: () => { [key: string]: string }) => {
 
   return { fieldProps, fields, setFields };
 };
+
+export const useFieldswithoutState = () => {
+  const fieldProps = useCallback(
+    ({
+      name,
+      type,
+      defaultValue,
+      error,
+    }: {
+      name: string;
+      type: string;
+      defaultValue?: string;
+      error?: string;
+    }) => ({
+      classes: inputClasses,
+      type,
+      id: `${name}-input`,
+      name,
+      defaultValue,
+      "aria-invalid": Boolean(error),
+      "aria-errormessage": error ? "title-error" : undefined,
+      fieldError: error,
+    }),
+    []
+  );
+
+  return { fieldProps };
+};

@@ -1,9 +1,10 @@
 import { useLoaderData, useParams, useTransition } from "@remix-run/react";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import clsx from "clsx";
 
 import { Portal } from "../Portal";
 import { Container } from "../utilities/layout";
+import { useActionsOption } from "../utilities/actions-option/context";
 import { ClosePortalBtn } from "../utilities/close-portal-btn";
 import { Form } from "../utilities/form";
 import { levelBorderColor, levelContainerClsx } from "../levels/styled";
@@ -42,6 +43,7 @@ export const MoveTerm = ({
       id="move-term"
       rootClass={portalRootClsx}
       clsx={portalContainertClsx}
+      handleClose={handleClose}
     >
       <Title>Move The Term To:</Title>
       <ClosePortalBtn handleCloseEvent={handleClose} />

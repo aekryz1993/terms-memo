@@ -6,11 +6,11 @@ interface TCardProps extends React.ComponentProps<"li"> {
 }
 
 const cardClsx =
-  "w-[400px] relative px-4 py-4 flex flex-col bg-bg-sec_lt dark:bg-bg-sec_dark shadow cursor-pointer rounded transition-all duration-300";
+  "relative px-4 py-4 flex flex-col bg-bg-sec_lt dark:bg-bg-sec_dark shadow cursor-pointer rounded";
 
-const visibleClsx = "translate-x-0";
+const visibleClsx = "";
 
-const deletedClsx = "-translate-x-[9999px]";
+const deletedClsx = "hidden";
 
 const Card = (props: TCardProps) => {
   const { children, className, ...divProps } = props;

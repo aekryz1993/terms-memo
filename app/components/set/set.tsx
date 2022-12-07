@@ -1,10 +1,11 @@
 import { useLoaderData } from "@remix-run/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 
 import { Box, Container } from "../utilities/layout";
 import { Title } from "../utilities/Typography";
 import { Portal } from "../Portal";
+import { ClosePortalBtn } from "../utilities/close-portal-btn";
 import {
   containerClsx,
   titleClsx,
@@ -15,18 +16,22 @@ import {
 } from "./styled";
 
 import type { SetLoaderData } from "~/types/data";
-import { ClosePortalBtn } from "../utilities/close-portal-btn";
 
 export const Set = () => {
   const { set } = useLoaderData<SetLoaderData>();
   const [isOpened, setIsOpened] = useState(false);
 
-  const handleCloseEvent = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    event.stopPropagation();
+  const handleCloseEvent = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      event.stopPropagation();
+      setIsOpened(false);
+    },
+    [setIsOpened]
+  );
+
+  const handleCloseFromOutside = useCallback(() => {
     setIsOpened(false);
-  };
+  }, [setIsOpened]);
 
   return (
     <>
@@ -44,6 +49,7 @@ export const Set = () => {
           id="set-description"
           rootClass={portalRootClsx}
           clsx={portalContainertClsx}
+          handleClose={handleCloseFromOutside}
         >
           <ClosePortalBtn handleCloseEvent={handleCloseEvent} />
           {set.description

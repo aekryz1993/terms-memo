@@ -1,6 +1,7 @@
 import clsx from "clsx";
 
 import { Box } from "./layout";
+import { ErrorMessage } from "./Typography";
 
 interface TDivProps extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
@@ -91,9 +92,9 @@ const Label = (props: TLabelProps) => {
 const ErrorMessageField = (props: TErrorMessageFieldProps) => {
   const { classes, className, children, ...errorMessageProps } = props;
   return (
-    <p {...errorMessageProps} className={clsx(classes, className)}>
+    <ErrorMessage {...errorMessageProps} className={clsx(classes, className)}>
       {children}
-    </p>
+    </ErrorMessage>
   );
 };
 
@@ -109,11 +110,7 @@ const Field = (props: TFieldProps) => {
           : null}
       </Label>
       <Input {...fieldProps} />
-      {fieldError ? (
-        <ErrorMessageField role="alert" id="title-error">
-          {fieldError}
-        </ErrorMessageField>
-      ) : null}
+      {fieldError ? <ErrorMessageField>{fieldError}</ErrorMessageField> : null}
     </Box>
   );
 };
@@ -130,13 +127,17 @@ const TextareaField = (props: TTextAreaFieldProps) => {
           : null}
       </Label>
       <Textarea {...fieldProps} />
-      {fieldError ? (
-        <ErrorMessageField role="alert" id="title-error">
-          {fieldError}
-        </ErrorMessageField>
-      ) : null}
+      {fieldError ? <ErrorMessageField>{fieldError}</ErrorMessageField> : null}
     </Box>
   );
 };
 
-export { TextareaField, Label, Field, Input, Textarea, FormInputItem };
+export {
+  TextareaField,
+  Label,
+  Field,
+  Input,
+  Textarea,
+  FormInputItem,
+  ErrorMessageField,
+};

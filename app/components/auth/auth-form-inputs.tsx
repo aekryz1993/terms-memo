@@ -1,68 +1,41 @@
 import { useActionData } from "@remix-run/react";
-import { Input } from "../utilities/inputs";
+import { memo } from "react";
+import { ErrorMessageField, Field, Input } from "../utilities/inputs";
+import { useFieldswithoutState } from "~/hooks/useFields";
 
 import type { LoginActionData } from "~/types/data";
 import type { TCurrentScreen } from ".";
-import { memo } from "react";
 
 export const AuthFormInputs = memo(
   ({ currentScreen }: { currentScreen: TCurrentScreen }) => {
     const actionData = useActionData<LoginActionData>();
 
+    const { fieldProps } = useFieldswithoutState();
+
     return (
       <>
         <input type="hidden" name="authType" value={currentScreen} />
-        <div>
-          <label htmlFor="username-input">Username</label>
-          <Input
-            type="text"
-            id="username-input"
-            name="username"
-            defaultValue={actionData?.fields?.username}
-            aria-invalid={Boolean(actionData?.fieldErrors?.username)}
-            aria-errormessage={
-              actionData?.fieldErrors?.username ? "username-error" : undefined
-            }
-          />
-          {actionData?.fieldErrors?.username ? (
-            <p
-              className="form-validation-error"
-              role="alert"
-              id="username-error"
-            >
-              {actionData.fieldErrors.username}
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <label htmlFor="password-input">Password</label>
-          <Input
-            type="password"
-            id="password-input"
-            name="password"
-            defaultValue={actionData?.fields?.username}
-            aria-invalid={Boolean(actionData?.fieldErrors?.username)}
-            aria-errormessage={
-              actionData?.fieldErrors?.username ? "username-error" : undefined
-            }
-          />
-          {actionData?.fieldErrors?.password ? (
-            <p
-              className="form-validation-error"
-              role="alert"
-              id="password-error"
-            >
-              {actionData.fieldErrors.password}
-            </p>
-          ) : null}
-        </div>
-        <div id="form-error-message">
-          {actionData?.formError ? (
-            <p className="form-validation-error" role="alert">
-              {actionData.formError}
-            </p>
-          ) : null}
-        </div>
+        <Field
+          {...fieldProps({
+            name: "username",
+            type: "text",
+            defaultValue: actionData?.fields?.username,
+            error: actionData?.fieldErrors?.username,
+          })}
+          placeholder="Type your username..."
+        />
+        <Field
+          {...fieldProps({
+            name: "password",
+            type: "password",
+            defaultValue: actionData?.fields?.password,
+            error: actionData?.fieldErrors?.password,
+          })}
+          placeholder="Type your password..."
+        />
+        {actionData?.formError ? (
+          <ErrorMessageField>{actionData.formError}</ErrorMessageField>
+        ) : null}
       </>
     );
   }

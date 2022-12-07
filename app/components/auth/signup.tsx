@@ -1,30 +1,29 @@
-import { Form } from "@remix-run/react";
-import { PrimaryButton } from "../utilities/buttons";
+import { useCallback } from "react";
+
 import { AuthFormInputs } from "./auth-form-inputs";
 import { TCurrentScreen } from ".";
+import { Box } from "../utilities/layout";
+import { ActionFrom } from "../utilities/action-form";
+import { Direction } from "./direction";
 
 import type { TScreenState } from ".";
 
 export const Signup = ({ setCurrentScreen, currentScreen }: TScreenState) => {
+  const handleChangeScreen = useCallback(
+    () => setCurrentScreen(TCurrentScreen.LOGIN),
+    [setCurrentScreen]
+  );
+
   return (
-    <div className="container">
-      <h1>Sign up</h1>
-      <Form method="post" replace>
+    <>
+      <ActionFrom actionType="register" buttonLabel="Sign up">
         <AuthFormInputs currentScreen={currentScreen} />
-        <div>
-          <span>Do You already have an account?</span>
-          <button
-            type="button"
-            onClick={() => setCurrentScreen(TCurrentScreen.LOGIN)}
-            className="text-text-tag_lt dark:text-text-tag_dark ml-2"
-          >
-            Go to login.
-          </button>
-        </div>
-        <PrimaryButton type="submit" className="button">
-          Sign up
-        </PrimaryButton>
-      </Form>
-    </div>
+        <Direction
+          text="Do You already have an account?"
+          handleChangeScreen={handleChangeScreen}
+          buttonLabel="Go to login."
+        />
+      </ActionFrom>
+    </>
   );
 };

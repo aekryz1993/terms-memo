@@ -22,8 +22,17 @@ export const EditOption = ({
     closeModalOption({ actionName: "edit" });
   };
 
+  const handleCloseFromOutside = () => {
+    closeModalOption({ actionName: "edit" });
+  };
+
   return (
-    <Portal id={id} rootClass={portalRootClsx} clsx={portalContainertClsx}>
+    <Portal
+      id={id}
+      rootClass={portalRootClsx}
+      clsx={portalContainertClsx}
+      handleClose={handleCloseFromOutside}
+    >
       <ClosePortalBtn handleCloseEvent={handleCloseEvent} />
       <Title classes={titleClsx}>{title}</Title>
       {children}
