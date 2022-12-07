@@ -64,6 +64,10 @@ export interface LevelsLoaderData {
   levels: TLevel[];
 }
 
+export interface LevelLoaderData {
+  level: TLevel;
+}
+
 export interface SetLoaderData {
   set: TSet;
 }

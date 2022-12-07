@@ -9,13 +9,12 @@ import {
   levelBorderColor,
   levelContainerClsx,
 } from "./styled";
-import { useLevelsNavContext } from "./context";
+import { TLevel, useLevelsNavContext } from "./context";
 
-import type { LevelsLoaderData } from "~/types/data";
+import type { LevelLoaderData, LevelsLoaderData } from "~/types/data";
 
 export const LevelsNavItems = memo(() => {
-  const { levels } = useLoaderData<LevelsLoaderData>();
-  const { levelId } = useParams();
+  const { levels, level } = useLoaderData<LevelsLoaderData & LevelLoaderData>();
 
   const {
     state: { currentLevel },
@@ -23,16 +22,16 @@ export const LevelsNavItems = memo(() => {
     updateLevel,
   } = useLevelsNavContext();
 
-  const handleItemClick = (itemName: string) => {
+  const handleItemClick = (itemName: TLevel) => {
     closeIsOpened();
     updateLevel(itemName);
   };
 
   useEffect(() => {
-    if (levelId) {
-      updateLevel(levelId);
+    if (level) {
+      updateLevel({ id: level.id, name: level.name });
     }
-  }, [levelId]);
+  }, [level?.id, level?.name]);
 
   return (
     <>
@@ -41,32 +40,34 @@ export const LevelsNavItems = memo(() => {
           classes={clsx(
             levelContainerClsx,
             levelBorderColor["All"],
-            currentLevel === "All" ? activeLevelClsx : inactiveLevelClsx
+            currentLevel.id === "All" ? activeLevelClsx : inactiveLevelClsx
           )}
-          onClick={() => handleItemClick("All")}
+          onClick={() => handleItemClick({ id: "All", name: "All" })}
         >
           All
         </Box>
       </NavLink>
       {levels?.length
-        ? levels.map((level) => (
+        ? levels.map((_level) => (
             <NavLink
-              key={level.id}
+              key={_level.id}
               prefetch="intent"
-              to={`levels/${level.id}`}
+              to={`levels/${_level.id}`}
               replace
             >
               <Box
                 classes={clsx(
                   levelContainerClsx,
-                  levelBorderColor[level.name],
-                  currentLevel === level.id
+                  levelBorderColor[_level.name],
+                  currentLevel.id === _level.id
                     ? activeLevelClsx
                     : inactiveLevelClsx
                 )}
-                onClick={() => updateLevel(level.id)}
+                onClick={() =>
+                  handleItemClick({ id: _level.id, name: _level.name })
+                }
               >
-                {level.name}
+                {_level.name}
               </Box>
             </NavLink>
           ))

@@ -1,6 +1,6 @@
 import { apiGraph, validAuth } from "../helpers";
 import { forbiddenError } from "../mocks/auth";
-import { findMany } from "../mocks/queries";
+import { findById, findMany } from "../mocks/queries";
 
 import type { TLevelDB } from "~/types/db";
 
@@ -23,4 +23,26 @@ const fetchSetLevelsMock = (levels: TLevelDB[]) =>
     );
   });
 
-export const level = (levels: TLevelDB[]) => [fetchSetLevelsMock(levels)];
+const fetchLevelMock = (levels: TLevelDB[]) =>
+  apiGraph.query("FetchLevel", async (req, res, ctx) => {
+    const { id } = req.variables;
+
+    const { user } = await validAuth(req);
+
+    if (!user) return res(ctx.errors([forbiddenError]));
+
+    const level = findById(levels, { id });
+
+    return res(
+      ctx.data({
+        fetchLevel: {
+          level,
+        },
+      })
+    );
+  });
+
+export const level = (levels: TLevelDB[]) => [
+  fetchSetLevelsMock(levels),
+  fetchLevelMock(levels),
+];

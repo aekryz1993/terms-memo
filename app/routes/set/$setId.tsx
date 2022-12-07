@@ -4,7 +4,7 @@ import { useCatch } from "@remix-run/react";
 import { fetchSet } from "~/endpoints/query/sets";
 import { getAuthSession } from "~/utils/auth.server";
 import { SetLayout } from "~/components/set";
-import { fetchSetLevels } from "~/endpoints/query/levels";
+import { fetchLevel, fetchSetLevels } from "~/endpoints/query/levels";
 import { createTerm } from "~/endpoints/mutation/term";
 import { validateTitle } from "~/utils/helpers";
 import { ErrorMessageField } from "~/components/utilities/inputs";
@@ -14,6 +14,7 @@ import type {
   TermActionData,
   LevelsLoaderData,
   SetLoaderData,
+  LevelLoaderData,
 } from "~/types/data";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -23,16 +24,26 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     throw new Response("Unauthorized", { status: 401 });
   }
 
-  const { setId } = params;
+  const { setId, levelId } = params;
 
   if (typeof setId !== "string") return { error: "Set ID must be provided" };
 
   const fetchSetResponse = await fetchSet({ id: setId }, token);
   const fetchSetLevelsResponse = await fetchSetLevels({ setId }, token);
 
-  const data: SetLoaderData & LevelsLoaderData = {
+  const fetchLevelResponse = levelId
+    ? await fetchLevel(
+        {
+          id: levelId,
+        },
+        token
+      )
+    : undefined;
+
+  const data: SetLoaderData & LevelsLoaderData & LevelLoaderData = {
     set: fetchSetResponse.data.fetchSet.set,
     levels: fetchSetLevelsResponse.data.setLevels.levels,
+    level: fetchLevelResponse?.data.fetchLevel.level,
   };
 
   return json(data);

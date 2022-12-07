@@ -1,11 +1,15 @@
-import { useParams } from "@remix-run/react";
 import { createContext, useContext, useState } from "react";
 
 import type { Dispatch } from "~/types/utils";
 
+export interface TLevel {
+  id: string;
+  name: string;
+}
+
 export interface TState {
   isOpened: boolean;
-  currentLevel?: string;
+  currentLevel: TLevel;
 }
 
 export interface TContext {
@@ -22,12 +26,15 @@ export const LevelsNavProvider = ({
   initialLevel,
 }: {
   children: React.ReactNode;
-  initialLevel?: string;
+  initialLevel?: TLevel;
 }) => {
   const [isOpened, setIsOpened] = useState(false);
-  const [currentLevel, setCurrentLevel] = useState(initialLevel);
+  const [currentLevel, setCurrentLevel] = useState({
+    id: initialLevel?.id ?? "All",
+    name: initialLevel?.name ?? "All",
+  });
 
-  const updateLevel = (level: string) => {
+  const updateLevel = (level: TLevel) => {
     setCurrentLevel(level);
   };
   const toggleIsOpened = () => {

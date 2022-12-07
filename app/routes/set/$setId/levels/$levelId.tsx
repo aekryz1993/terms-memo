@@ -52,7 +52,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       },
       token
     );
-
     const { items, ...paginationData } =
       fetchLevelTermsResponse.data.levelTerms;
 

@@ -30,12 +30,17 @@ export const Levels = ({ children }: { children: React.ReactNode }) => {
           toggleIsOpened();
         }}
       >
-        {currentLevel}
+        {currentLevel.name}
         <ChevronDownIcon className={arrowDownIconClsx} />
       </Box>
 
       {isOpened ? (
-        <Portal id="levels" rootClass={modalRootClsx} clsx={modalContainerClsx}>
+        <Portal
+          id="levels"
+          rootClass={modalRootClsx}
+          clsx={modalContainerClsx}
+          handleClose={closeIsOpened}
+        >
           <XMarkIcon
             className={closeIconClsx}
             onClick={() => closeIsOpened()}
