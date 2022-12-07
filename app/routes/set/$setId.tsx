@@ -7,6 +7,7 @@ import { SetLayout } from "~/components/set";
 import { fetchSetLevels } from "~/endpoints/query/levels";
 import { createTerm } from "~/endpoints/mutation/term";
 import { validateTitle } from "~/utils/helpers";
+import { ErrorMessageField } from "~/components/utilities/inputs";
 
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import type {
@@ -103,7 +104,6 @@ export default function Set() {
 
 export function CatchBoundary() {
   const caught = useCatch();
-  console.log(caught);
 
-  return <div>Huh... Couldn't find an client with the ID of:</div>;
+  return <ErrorMessageField>{caught.statusText}</ErrorMessageField>;
 }

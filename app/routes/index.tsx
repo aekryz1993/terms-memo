@@ -4,11 +4,12 @@ import { useCatch } from "@remix-run/react";
 import { fetchSets } from "~/endpoints/query/sets";
 import { getAuthSession } from "~/utils/auth.server";
 import { SetsLayout } from "~/components/sets";
+import { validateTitle } from "~/utils/helpers";
+import { createSet, editSet } from "~/endpoints/mutation/set";
+import { ErrorMessageField } from "~/components/utilities/inputs";
 
 import type { LoaderFunction } from "@remix-run/node";
 import type { SetActionData, SetsLoaderData } from "~/types/data";
-import { validateTitle } from "~/utils/helpers";
-import { createSet, editSet } from "~/endpoints/mutation/set";
 
 export const loader: LoaderFunction = async ({ request }) => {
   try {
@@ -117,7 +118,6 @@ export default function Index() {
 
 export function CatchBoundary() {
   const caught = useCatch();
-  console.log(caught);
 
-  return <div>Huh... Couldn't find an client with the ID of:</div>;
+  return <ErrorMessageField>{caught.statusText}</ErrorMessageField>;
 }

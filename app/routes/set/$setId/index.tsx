@@ -1,12 +1,13 @@
 import { Outlet, useCatch } from "@remix-run/react";
 
+import { ErrorMessageField } from "~/components/utilities/inputs";
+
 export default function Set() {
   return <Outlet />;
 }
 
 export function CatchBoundary() {
   const caught = useCatch();
-  console.log(caught);
 
-  return <div>Huh... Couldn't find an client with the ID of:</div>;
+  return <ErrorMessageField>{caught.statusText}</ErrorMessageField>;
 }

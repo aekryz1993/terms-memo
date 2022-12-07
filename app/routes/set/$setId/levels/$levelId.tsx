@@ -7,6 +7,7 @@ import { TermsLayout } from "~/components/terms";
 import { validateTitle } from "~/utils/helpers";
 import { editTerm, moveTerm } from "~/endpoints/mutation/term";
 import { fetchSetLevels } from "~/endpoints/query/levels";
+import { ErrorMessageField } from "~/components/utilities/inputs";
 
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import type {
@@ -155,7 +156,6 @@ export default function Levels() {
 
 export function CatchBoundary() {
   const caught = useCatch();
-  console.log(caught);
 
-  return <div>Huh... Couldn't find an client with the ID of:</div>;
+  return <ErrorMessageField>{caught.statusText}</ErrorMessageField>;
 }
