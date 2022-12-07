@@ -8,7 +8,8 @@ import { getInitialNamespaces } from "remix-i18next";
 
 import i18n from "./i18n";
 
-if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
+// if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
+if (typeof window !== "undefined") {
   const { worker } = require("./__mocks__/browser");
   worker.start();
 }

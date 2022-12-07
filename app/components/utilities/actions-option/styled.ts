@@ -1,5 +1,5 @@
 const optionsContainer =
-  "absolute top-2 right-2 hover:bg-bg-sec_hvr_lt dark:hover:bg-bg-sec_hvr_dark rounded-full p-1 z-50";
+  "absolute top-2 right-2 hover:bg-bg-sec_hvr_lt dark:hover:bg-bg-sec_hvr_dark rounded-full p-1 z-40";
 
 // delete-option
 const deleteRootclsx =

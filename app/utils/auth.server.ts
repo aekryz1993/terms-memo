@@ -8,7 +8,7 @@ if (!sessionSecret) {
 const tokenStorage = createCookieSessionStorage({
   cookie: {
     name: "refresh_token",
-    secure: process.env.NODE_ENV === "production" ? true : false,
+    // secure: process.env.NODE_ENV === "production" ? true : false,
     secrets: [sessionSecret],
     sameSite: "lax",
     path: "/",

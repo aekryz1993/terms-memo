@@ -1,6 +1,5 @@
 const container =
-  "fixed z-40 shadow-2xl h-full w-[300px] md:w-[414px] xl:w-[820px] bg-bg-sec_lt dark:bg-bg-sec_dark transition-transform duration-1000";
-// flex flex-col gap-4 md:gap-12 px-4 py-2 md:py-12";
+  "fixed z-50 shadow-2xl h-full w-[300px] md:w-[414px] xl:w-[820px] bg-bg-sec_lt dark:bg-bg-sec_dark transition-transform duration-1000";
 
 const contentContainer = "overflow-y-auto flex flex-col";
 

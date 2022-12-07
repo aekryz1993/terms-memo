@@ -12,10 +12,10 @@ import i18n from "./i18n"; // your i18n configuration file
 
 const ABORT_DELAY = 5000;
 
-if (process.env.NODE_ENV === "development") {
-  const { server } = require("./__mocks__/server");
-  server.listen();
-}
+// if (process.env.NODE_ENV === "development") {
+const { server } = require("./__mocks__/server");
+server.listen();
+// }
 
 export default async function handleRequest(
   request: Request,
